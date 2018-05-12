@@ -101,7 +101,10 @@ class PhotoController extends Controller
                 $path = $file->storeAs('public/images', $name);
                 $path = "/storage/images/".$name;
                 $thumbnailPath = "/storage/images/thumb_".$name;
-                Image::make("./".$path)->resize(150, 100)->save("./".$thumbnailPath);
+                Image::make("./".$path)
+                    ->orientate()
+                    ->fit(150, 100)
+                    ->save("./".$thumbnailPath);
 
                 $photo = new Photo;
                 $photo->user_id = $userId;
