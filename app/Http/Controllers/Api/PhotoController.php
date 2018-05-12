@@ -32,6 +32,15 @@ class PhotoController extends Controller
         return $photo;
     }
 
+    public function showForKeyword(Request $request, $keywordId)
+    {
+        $userId = Auth::id();
+        $keywordId = intval($keywordId);
+        $photo = Photo::getforUserAndKeyword($userId, $keywordId);
+
+        return $photo;
+    }
+
     public function updateDescription(Request $request, $photoId)
     {
         logger("PhotoController::updateDescription: Enter $photoId");

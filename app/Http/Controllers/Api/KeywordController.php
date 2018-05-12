@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Keywords;
+use App\Photo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
-use App\Photo;
 
 class KeywordController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function getAll()
+    {
+        return Keywords::allKeywordNames();
     }
 
     public function addPhotoKeyword(Request $request, $photoId)

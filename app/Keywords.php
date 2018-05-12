@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class Keywords extends Model
 {
+    public static function allKeywordNames()
+    {
+       return DB::select('select id, name from keywords');
+    }
+
     public static function findOrCreateId(string $keyword)
     {
         logger("Keywords::findOrCreateId", ["Keyword" => $keyword]);

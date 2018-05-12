@@ -21,9 +21,11 @@ Route::get('/photos/upload', function () {
 
 Route::get('/photos/{id}', 'PhotoController@show');
 
+Route::get('/api/keywords', 'Api\KeywordController@getAll');
 Route::post('/api/keywords/photo/{id}', 'Api\KeywordController@addPhotoKeyword');
 Route::get('/api/photos', 'Api\PhotoController@index');
 Route::get('/api/photos/{id}', 'Api\PhotoController@show');
+Route::get('/api/photos/keyword/{id}', 'Api\PhotoController@showForKeyword');
 Route::post('/api/photos/upload', 'Api\PhotoController@upload');
 Route::post('/api/photos/{id}/description', 'Api\PhotoController@updateDescription');
 Route::post('/api/photos/{id}/title', 'Api\PhotoController@updateTitle');
