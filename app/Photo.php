@@ -9,7 +9,7 @@ class Photo extends Model
 {
     public static function getAllForUser($userId)
     {
-        return DB::select('select photos.id, photos.name, photos.description, photos.filepath from photos, users where user_id=? and users.id = photos.user_id order by photos.created_at',[$userId]);
+        return DB::select('select photos.id, photos.name, photos.description, photos.thumbnail_filepath, photos.filepath from photos, users where user_id=? and users.id = photos.user_id order by photos.created_at',[$userId]);
     }
 
     public static function getForUser($userId, $photoId)
