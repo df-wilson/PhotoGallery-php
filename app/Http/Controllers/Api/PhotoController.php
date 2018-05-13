@@ -37,9 +37,14 @@ class PhotoController extends Controller
     {
         $userId = Auth::id();
         $keywordId = intval($keywordId);
-        $photo = Photo::getforUserAndKeyword($userId, $keywordId);
 
-        return $photo;
+        if($keywordId == 0) {
+            $photos = Photo::getAllForUser($userId);
+        } else {
+            $photos = Photo::getforUserAndKeyword($userId, $keywordId);
+        }
+
+        return $photos;
     }
 
     public function updateDescription(Request $request, $photoId)
