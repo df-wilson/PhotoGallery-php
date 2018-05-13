@@ -33,11 +33,17 @@ function submitDescription(id)
 
 function submitKeyword(photoId)
 {
-    let keyword = document.getElementById("keyword-input").value;
+    let keywordElement = document.getElementById("keyword-input");
+    let keyword = keywordElement.value;
+    keyword.trim();
 
+    if(keyword.length < 1) {
+        return;
+    }
+    
     axios.post('/api/keywords/photo/' + photoId, {
         keyword: keyword
-    })
+        })
         .then(function (response) {
             console.log(response);
             if(response.status == 201) {
@@ -48,6 +54,8 @@ function submitKeyword(photoId)
         .catch(function (error) {
             console.log(error);
         });
+
+    keywordElement.value = "test"
 }
 
 function submitTitle(id)
