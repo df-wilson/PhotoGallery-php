@@ -15,6 +15,7 @@ function showAddKeyword()
 {
     let addKeywordForm = document.getElementById("add-keyword-form");
     addKeywordForm.style.display = "block";
+    window.scrollTo(0,document.body.scrollHeight);
 }
 function submitDescription(id)
 {
@@ -40,7 +41,7 @@ function submitKeyword(photoId)
     if(keyword.length < 1) {
         return;
     }
-    
+
     axios.post('/api/keywords/photo/' + photoId, {
         keyword: keyword
         })
@@ -48,14 +49,16 @@ function submitKeyword(photoId)
             console.log(response);
             if(response.status == 201) {
                 let keywordDiv = document.getElementById("keyword-div");
-                keywordDiv.insertAdjacentHTML('beforeend',`<button class="btn btn-sm">${keyword}</button>`);
+                keywordDiv.insertAdjacentHTML('beforeend',`<button class="btn">${keyword}</button>`);
             }
         })
         .catch(function (error) {
             console.log(error);
         });
 
-    keywordElement.value = "test"
+    keywordElement.value = "";
+
+    window.scrollTo(0,document.body.scrollHeight);
 }
 
 function submitTitle(id)
