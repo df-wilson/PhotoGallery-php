@@ -23,13 +23,13 @@
                         <button id="desc-update-button" class="btn btn-primary btn-sm" type="button" onclick="submitDescription({{$id}})" style="display: none">Update</button>
                         <h3>Keywords <button class="btn btn-xs btn-primary" type="button" onclick="showAddKeyword()">+</button></h3>
                         <div id="add-keyword-form">
-                            <input id="keyword-input" type="text" required size="20">
+                            <input id="keyword-input" type="text" size="20">
                             <button id="keyword-update-btn" class="btn btn-primary btn-sm" type="button" onclick="submitKeyword({{$id}})">Add</button>
                             <button id="keyword-done-btn" class="btn btn-primary btn-sm" type="button" onclick="doneAddKeyword()">Done</button>
                         </div>
                         <div id="keyword-div">
                         @foreach($keywords as $keyword)
-                        <button class="btn btn-sm">{{$keyword->name}}</button>
+                        <button class="btn">{{$keyword->name}}</button>
                         @endforeach
                         </div>
                     </div>
