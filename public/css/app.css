@@ -56,6 +56,11 @@ body {
     margin: 10px auto;
 }
 
+.responsive-image {
+    max-width: 100%;
+    height: auto;
+}
+
 #img-title-edit {
     max-width: 500px;
     margin: 0 auto;
@@ -69,4 +74,9 @@ body {
 
 .keyword-search {
     margin-bottom:15px;
+}
+
+.keyword-div {
+    margin-bottom: 20px;
+    margin-top: 10px;
 }

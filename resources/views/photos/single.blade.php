@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="img-area">
-                       <img src="{{$src}}" alt="{{$name}}">
+                       <img src="{{$src}}" alt="{{$name}}" class="responsive-image">
                         <textarea id="desc-text" class="img-desc" name="textarea" rows="3" cols="40" onfocus="showUpdateButton()">{{$description}}</textarea>
                         <button id="desc-update-button" class="btn btn-primary btn-sm" type="button" onclick="submitDescription({{$id}})" style="display: none">Update</button>
                         <h3>Keywords <button class="btn btn-xs btn-primary" type="button" onclick="showAddKeyword()">+</button></h3>
