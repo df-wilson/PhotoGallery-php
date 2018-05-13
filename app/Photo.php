@@ -26,7 +26,7 @@ class Photo extends Model
     public static function getForUserAndKeyword(int $userId, int $keywordId)
     {
         $photo = [];
-        $result = DB::select('SELECT photos.id, photos.name, photos.description, photos.filepath
+        $result = DB::select('SELECT photos.id, photos.name, photos.description, photos.thumbnail_filepath
                               FROM photos, users, photo_keywords
                               WHERE users.id = photos.user_id AND photos.id = photo_keywords.photo_id AND users.id = ? AND photo_keywords.keyword_id = ?
                               ORDER BY photos.created_at',
