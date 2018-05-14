@@ -110,6 +110,9 @@ class PhotoController extends Controller
                     ->orientate()
                     ->fit(150, 100)
                     ->save("./".$thumbnailPath);
+                Image::make("./".$path)
+                    ->orientate()
+                    ->save("./".$path);
 
                 $photo = new Photo;
                 $photo->user_id = $userId;
