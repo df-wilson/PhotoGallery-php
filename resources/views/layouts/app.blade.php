@@ -11,7 +11,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
     @yield('css')
 </head>
 <body>
@@ -37,7 +38,12 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="/photos/upload">Upload</a></li>
+                        @auth
+                            <li><a href="/photos/upload">Upload</a></li>
+                        @endauth
+
+                        <li><a href="/photos/explore">Explore</a></li>
+                        <li><a href="/photos/search">Search</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -69,8 +75,8 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
 
         @yield('content')
     </div>
