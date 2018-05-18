@@ -9,7 +9,14 @@ class Photo extends Model
 {
     public static function getAllForUser($userId)
     {
+        logger("Enter Photo::getAllForUser");
         return DB::select('select photos.id, photos.name, photos.description, photos.thumbnail_filepath, photos.filepath from photos, users where user_id=? and users.id = photos.user_id order by photos.created_at',[$userId]);
+    }
+
+    public static function getAllPublic()
+    {
+        logger("Enter Photo::getAllPublic");
+        return DB::select('select photos.id, photos.name, photos.description, photos.thumbnail_filepath, photos.filepath from photos where is_public=1 order by photos.created_at');
     }
 
     public static function getForUser($userId, $photoId)
@@ -32,7 +39,38 @@ class Photo extends Model
                               ORDER BY photos.created_at',
                               [$userId, $keywordId]);
 
-        logger("Temp", ["Result" => $result]);
+        if(count($result)) {
+            $photo = $result;
+        }
+        return $photo;
+    }
+
+    public static function getPublic($photoId)
+    {
+        $photo = null;
+
+        $photoId = intval($photoId);
+
+        $result = DB::select('SELECT photos.id, photos.name, photos.description, photos.filepath
+                              FROM photos
+                              WHERE photos.id = ? AND is_public=1',
+                              [$photoId]);
+        if(count($result)) {
+            $photo = $result[0];
+        }
+
+        return $photo;
+    }
+
+    public static function getPublicForKeyword(int $keywordId)
+    {
+        $photo = [];
+        $result = DB::select('SELECT photos.id, photos.name, photos.description, photos.thumbnail_filepath
+                              FROM photos, photo_keywords
+                              WHERE photos.id = photo_keywords.photo_id AND photos.is_public=1 AND photo_keywords.keyword_id = ?
+                              ORDER BY photos.created_at',
+            [$keywordId]);
+
         if(count($result)) {
             $photo = $result;
         }

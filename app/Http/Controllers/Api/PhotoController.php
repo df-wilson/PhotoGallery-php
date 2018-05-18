@@ -12,7 +12,7 @@ class PhotoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     public function index()
@@ -24,7 +24,14 @@ class PhotoController extends Controller
 
         return $photos;
     }
-    
+
+    public function getAllPublic()
+    {
+        $photos = Photo::getAllPublic();
+        logger("PhotoController::getAllPublic LEAVE", ["Photos" => $photos]);
+        return $photos;
+    }
+
     public function show($photoId)
     {
         $userId = Auth::id();
@@ -38,15 +45,34 @@ class PhotoController extends Controller
         $userId = Auth::id();
         $keywordId = intval($keywordId);
 
-        if($keywordId == 0) {
-            $photos = Photo::getAllForUser($userId);
+        if($userId) {
+            if($keywordId == 0) {
+                $photos = Photo::getAllForUser($userId);
+            } else {
+                $photos = Photo::getforUserAndKeyword($userId, $keywordId);
+            }
         } else {
-            $photos = Photo::getforUserAndKeyword($userId, $keywordId);
+            $photos = $this->showPublicForKeyword($keywordId);
         }
 
         return $photos;
     }
 
+    public function showPublicForKeyword($keywordId)
+    {
+        logger("PhotoController::showPublicForKeyword: Enter $keywordId");
+
+        $keywordId = intval($keywordId);
+
+        if($keywordId == 0) {
+            $photos = Photo::getAllPublic();
+        } else {
+            $photos = Photo::getPublicForKeyword($keywordId);
+        }
+
+        return $photos;
+    }
+    
     public function updateDescription(Request $request, $photoId)
     {
         logger("PhotoController::updateDescription: Enter $photoId");
