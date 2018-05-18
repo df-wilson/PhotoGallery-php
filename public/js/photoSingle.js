@@ -98,3 +98,18 @@ function editTitle()
     document.getElementById("img-title-input").value = title.innerText;
     title_edit.style.display = "block";
 }
+
+function submitTogglePublic(id)
+{
+    let checkbox = document.getElementById("public-checkbox");
+
+    axios.post('/api/photos/'+id+'/public', {
+        checked: checkbox.checked
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}

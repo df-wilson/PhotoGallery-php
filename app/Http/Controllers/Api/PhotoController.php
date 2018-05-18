@@ -72,7 +72,7 @@ class PhotoController extends Controller
 
         return $photos;
     }
-    
+
     public function updateDescription(Request $request, $photoId)
     {
         logger("PhotoController::updateDescription: Enter $photoId");
@@ -95,10 +95,28 @@ class PhotoController extends Controller
         return response($message, $code);
     }
 
+    public function updateIsPublic(Request $request, $photoId)
+    {
+        $code = 500;
+        $message = "Server Error";
+        $userId = Auth::id();
+        $photo = Photo::find($photoId);
+        
+        if($photo && $photo->user_id == $userId) {
+            $photo->is_public = $request->input("checked");
+            $photo->save();
+            $code = 200;
+            $message = "updated";
+        } else {
+            $code = 403;
+            $message = "photo does not belong to user.";
+        }
+
+        return response($message, $code);
+    }
+
     public function updateTitle(Request $request, $id)
     {
-        logger("PhotoController::updateTitle: Enter $id");
-
         $code = 500;
         $message = "Server Error";
         $userId = Auth::id();

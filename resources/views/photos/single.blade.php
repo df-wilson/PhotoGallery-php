@@ -27,10 +27,16 @@
                             <button id="keyword-update-btn" class="btn btn-primary btn-sm" type="button" onclick="submitKeyword({{$id}})">Add</button>
                             <button id="keyword-done-btn" class="btn btn-primary btn-sm" type="button" onclick="doneAddKeyword()">Done</button>
                         </div>
+
                         <div id="keyword-div">
                         @foreach($keywords as $keyword)
                         <button class="btn">{{$keyword->name}}</button>
                         @endforeach
+                        </div>
+
+                        <div id="public-toggle-div">
+                            <input type="checkbox" id="public-checkbox" name="public-checkbox" onchange="submitTogglePublic({{$id}})">
+                            <label for="subscribeNews">Allow public views.</label>
                         </div>
                     </div>
                 </div>
