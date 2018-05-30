@@ -62,6 +62,25 @@ class Photo extends Model
         return $photo;
     }
 
+    public static function search(bool $publicPhotos, bool $ownPhotos, string $startDate, string $endDate, int $keywordId, string $text)
+    {
+        $photos = [];
+        $result = DB::select('SELECT photos.id, photos.name, photos.description, photos.thumbnail_filepath
+                              FROM photos, photo_keywords
+                              WHERE (photos.id = photo_keywords.photo_id AND photos.is_public=1 AND photo_keywords.keyword_id = ?) OR 
+                                    (photos.name = ? AND photos.is_public = 1) OR 
+                                    (photos.description = ? AND photos.is_public = 1)
+                              ORDER BY photos.created_at',
+            [$keywordId, $text, $text]);
+
+        if(count($result)) {
+            $photos = $result;
+        }
+
+        logger("Photo::search LEAVE", ["photos" => $photos]);
+        return $photos;
+    }
+
     public static function getPublicForKeyword(int $keywordId)
     {
         $photo = [];

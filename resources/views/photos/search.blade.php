@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div id="app">
-                    <photo-upload-form></photo-upload-form>
+                    <photo-search></photo-search>
                 </div>
             </div>
         </div>
@@ -13,5 +13,6 @@
 @endsection
 
 @section('javascript')
-    <script src="/js/photoUpload.js"></script>
+    <script src="/js/photoSearch.js"></script>
+
 @endsection

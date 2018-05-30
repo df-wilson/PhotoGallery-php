@@ -28,7 +28,7 @@ class PhotoController extends Controller
     public function getAllPublic()
     {
         $photos = Photo::getAllPublic();
-        logger("PhotoController::getAllPublic LEAVE", ["Photos" => $photos]);
+
         return $photos;
     }
 
@@ -38,6 +38,24 @@ class PhotoController extends Controller
         $photo = Photo::getforUser($userId, $photoId);
 
         return $photo;
+    }
+
+    public function searchSubmit(Request $request)
+    {
+        logger("PhotoController::searchSubmit LEAVE", ["Data" => $request]);
+        $viewPublic = $request->public_checkbox;
+        $viewPublic = $viewPublic ? true : false;
+
+        $viewPrivate = $request->private_checkbox;
+        $viewPrivate = $viewPrivate ? true : false;
+
+        $text = $request->text_search;
+        if($text == null) {
+            $text="";
+        }
+
+        $photos = Photo::search($viewPublic, $viewPrivate, $request->from_date, $request->to_date, $request->keyword_search, $text);
+        return $photos;
     }
 
     public function showForKeyword(Request $request, $keywordId)

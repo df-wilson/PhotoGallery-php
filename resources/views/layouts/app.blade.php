@@ -85,8 +85,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     @yield('javascript')
-    <script src="/js/photoUpload.js"></script>
-    <script src="/js/photoHome.js"></script>
     <script src="/js/photos.js"></script>
 </body>
 </html>

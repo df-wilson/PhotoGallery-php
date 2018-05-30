@@ -21,6 +21,11 @@ class PhotoController extends Controller
         }
     }
 
+    public function search()
+    {
+        return view('photos.search');
+    }
+
     public function explore()
     {
         return view('photos.explore');

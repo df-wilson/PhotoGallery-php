@@ -34,5 +34,6 @@ Route::post('/api/photos/upload', 'Api\PhotoController@upload');
 Route::post('/api/photos/{id}/description', 'Api\PhotoController@updateDescription');
 Route::post('/api/photos/{id}/title', 'Api\PhotoController@updateTitle');
 Route::post('/api/photos/{id}/public', 'Api\PhotoController@updateIsPublic');
+Route::post('/api/photos/search', 'Api\PhotoController@searchSubmit');
 
 Auth::routes();
