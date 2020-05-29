@@ -49,7 +49,7 @@ function submitKeyword(photoId)
             console.log(response);
             if(response.status == 201) {
                 let keywordDiv = document.getElementById("keyword-div");
-                keywordDiv.insertAdjacentHTML('beforeend',`<button class="btn">${keyword}</button>`);
+                keywordDiv.insertAdjacentHTML('beforeend',`<p><button class="btn">${keyword}</button></p>`);
             }
         })
         .catch(function (error) {
