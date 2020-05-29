@@ -42,12 +42,20 @@ body {
 }
 
 .img-area {
-    margin: 10px auto;
+    margin: 1em auto;
 }
 
 .responsive-image {
     max-width: 100%;
     height: auto;
+}
+
+#desc-text {
+    margin: 1em auto;
+}
+
+#img-title {
+    /*margin-bottom: 2em;*/
 }
 
 #img-title-edit {
@@ -57,8 +65,13 @@ body {
     display: none;
 }
 
+#keyword-input {
+    margin-bottom: 10px;
+}
+
 #add-keyword-form {
     display: none;
+    margin-bottom: 1em;
 }
 
 .keyword-search {
