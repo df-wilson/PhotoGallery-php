@@ -19,7 +19,9 @@ Vue.component('photo-explore', {
             <div class="panel-body">
                 <div>
                     <div class="thumbnail img-preview">
-                        <img :src="photo.thumbnail_filepath" :alt="photo.description" width="200px" height="150px">
+                        <a v-bind:href="'/photos/explore/photo/' + photo.id">
+                            <img :src="photo.thumbnail_filepath" :alt="photo.description" width="200px" height="150px">
+                        </a>
                     </div>
                 </div>
             </div>
