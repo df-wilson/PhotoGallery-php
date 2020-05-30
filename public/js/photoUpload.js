@@ -25,7 +25,8 @@ Vue.component('photo-upload-form', {
         <div v-if="isSuccess">
           <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
            <p>
-              <a href="javascript:void(0)" @click="reset()">Upload again</a>
+              <a href="javascript:void(0)" @click="reset()">Upload Again</a>
+              <a href="/" @click="reset()" style="margin-left: 1em">All Photos</a>
            </p>
            <ul class="list-unstyled">
              <li v-for="item in uploadedFiles">
