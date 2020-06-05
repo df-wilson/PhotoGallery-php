@@ -35,17 +35,24 @@ class KeywordController extends Controller
 
             $photo = Photo::find($photoId);
             if($photo && $photo->user_id == $userId) {
-                $keywordId = Keywords::findOrCreateId(mb_strtolower($request->keyword));
-                logger("KeywordController::addPhotoKeyword - $keywordId.");
+                $keyword = mb_strtolower($request->keyword);
 
-                $exists = Keywords::addKeywordToPhoto($keywordId, $photoId);
+                if($keyword) {
+                    $keywordId = Keywords::findOrCreateId($keyword);
+                    logger("KeywordController::addPhotoKeyword - $keywordId.");
 
-                if($exists) {
-                    $message = 'exists';
-                    $code = 200;
+                    $exists = Keywords::addKeywordToPhoto($keywordId, $photoId);
+
+                    if($exists) {
+                        $message = 'exists';
+                        $code = 200;
+                    } else {
+                        $message = 'ok';
+                        $code = 201;
+                    }
                 } else {
-                    $message = 'ok';
-                    $code = 201;
+                    $code = 422;
+                    $message = "keyword required";
                 }
             } else {
                 $code = 403;
