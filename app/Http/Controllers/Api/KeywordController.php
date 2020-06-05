@@ -12,42 +12,58 @@ class KeywordController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+
     }
 
     public function getAll()
     {
-        return Keywords::allKeywordNames();
+        $code = 500;
+        return response()->json([
+            'msg' => 'ok',
+            'keywords' => Keywords::allKeywordNames()]);
     }
 
-    public function addPhotoKeyword(Request $request, $photoId)
+    public function addPhotoKeyword(Request $request, int $photoId)
     {
-        logger("KeywordController::addPhotoKeyword - ENTER - Photo Id $photoId");
+        logger("KeywordController::addPhotoKeyword - ENTER", ["Photo Id" => $photoId]);
 
         $code = 500;
         $message = "server error.";
-        $userId = Auth::id();
 
-        $photo = Photo::find($photoId);
-        if($photo && $photo->user_id == $userId) {
-            $keywordId = Keywords::findOrCreateId(mb_strtolower($request->keyword));
-            logger("KeywordController::addPhotoKeyword - $keywordId.");
+        if (Auth::check()) {
+            $userId = Auth::id();
 
-            $exists = Keywords::addKeywordToPhoto($keywordId, $photoId);
+            $photo = Photo::find($photoId);
+            if($photo && $photo->user_id == $userId) {
+                $keywordId = Keywords::findOrCreateId(mb_strtolower($request->keyword));
+                logger("KeywordController::addPhotoKeyword - $keywordId.");
 
-            if($exists) {
-                $message = 'exists';
-                $code = 200;
+                $exists = Keywords::addKeywordToPhoto($keywordId, $photoId);
+
+                if($exists) {
+                    $message = 'exists';
+                    $code = 200;
+                } else {
+                    $message = 'ok';
+                    $code = 201;
+                }
             } else {
-                $message = 'ok';
-                $code = 201;
+                $code = 403;
+                $message = "photo does not belong to user.";
             }
         } else {
-            $code = 403;
-            $message = "photo does not belong to user.";
+            $code = 401;
+            $message = "not authorized";
         }
 
-        return response($message, $code);
+        logger("KeywordController::addPhotoKeyword - Leave", ["Message" => $message, "Code" => $code]);
+
+        return response()
+            ->json(
+                [
+                    'msg' => $message,
+                ],
+                $code);
     }
 
     public function store(Request $request)
