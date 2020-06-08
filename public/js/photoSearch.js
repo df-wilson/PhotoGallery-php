@@ -3,7 +3,7 @@ Vue.component('photo-search', {
       <div class="row">
         <div class="col-xs-12">
         <h1 class="text-center">Search Photos</h1>
-        <form id="search-form" action="/api/photos/search" method="post">
+        <form id="search-form" action="/photos/search" method="post">
         <input type="hidden" name="_token" :value="csrf">
           <div class="form-group">
             <label for="text-search">Text Search</label>
@@ -11,9 +11,9 @@ Vue.component('photo-search', {
                        inputmode="text" size="50" v-model="text">
           </div>
           <div class="form-group">
-            <label for="keyword-search">
+            <label for="keyword-id">
                 Keyword Search
-                <select id="keyword-search" class="form-control" name="keyword_search" v-model="keyword">
+                <select id="keyword-id" class="form-control" name="keyword_id" v-model="keyword_id">
                   <option disabled value="">Keywords</option>
                   <option v-bind:value="0">all</option>
                   <option v-for="keyword in keywords" v-bind:value="keyword.id">
@@ -61,7 +61,7 @@ Vue.component('photo-search', {
             text: "",
             private: true,
             public: false,
-            keyword: '',
+            keyword_id: '',
             keywords: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
@@ -84,8 +84,8 @@ Vue.component('photo-search', {
         fetchKeywords() {
             axios.get('/api/keywords')
                 .then(({data}) => {
-                    this.keywords = data;
-                    console.log("Retrieving keywords fetch " + JSON.stringify(data));
+                    this.keywords = data.keywords;
+                    console.log("Retrieving keywords fetch " + JSON.stringify(data.keywords));
                 });
         },
         reset()
@@ -93,7 +93,7 @@ Vue.component('photo-search', {
             this.text = "";
             this.private = true;
             this.public = false;
-            this.keyword = "";
+            this.keyword_id = "";
             this.fromdate = "";
             
             let local = new Date();

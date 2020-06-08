@@ -40,22 +40,37 @@ class PhotoController extends Controller
         return $photo;
     }
 
-    public function searchSubmit(Request $request)
+    public function search(Request $request)
     {
-        logger("PhotoController::searchSubmit LEAVE", ["Data" => $request]);
+        logger("Api/PhotoController::search - ENTER", ["Data" => $request->all()]);
+
+        $userId = Auth::id();
+
+        if($userId == null) {
+            $userId = 0;
+        }
+
         $viewPublic = $request->public_checkbox;
         $viewPublic = $viewPublic ? true : false;
 
         $viewPrivate = $request->private_checkbox;
         $viewPrivate = $viewPrivate ? true : false;
 
-        $text = $request->text_search;
+        $keywordId = intval($request->keyword_id);
+        logger("Keyword ID: $keywordId");
+        
+        $text = $request->text;
         if($text == null) {
             $text="";
         }
 
-        $photos = Photo::search($viewPublic, $viewPrivate, $request->from_date, $request->to_date, $request->keyword_search, $text);
-        return $photos;
+        $fromDate = $request->from_date ? $request->from_date : "";
+        $toDate = $request->to_date ? $request->to_date : "";
+
+        $photos = Photo::search($userId, $viewPublic, $viewPrivate, $fromDate, $toDate, $keywordId, $text);
+
+        logger("Api/PhotoController::search - LEAVE", ["Photos" => $photos]);
+        return response()->json(['msg' => 'ok','photos' => $photos]);
     }
 
     public function showForKeyword(Request $request, $keywordId)
@@ -78,7 +93,7 @@ class PhotoController extends Controller
 
     public function showPublicForKeyword($keywordId)
     {
-        logger("PhotoController::showPublicForKeyword: Enter $keywordId");
+        logger("PhotoController::showPublicForKeyword: ENTER $keywordId");
 
         $keywordId = intval($keywordId);
 
@@ -93,7 +108,7 @@ class PhotoController extends Controller
 
     public function updateDescription(Request $request, $photoId)
     {
-        logger("PhotoController::updateDescription: Enter $photoId");
+        logger("PhotoController::updateDescription: ENTER $photoId");
 
         $code = 500;
         $message = "Server Error";
@@ -170,7 +185,7 @@ class PhotoController extends Controller
                 $thumbnailPath = "/storage/images/thumb_".$name;
                 Image::make("./".$path)
                     ->orientate()
-                    ->fit(150, 100)
+                    ->fit(200, 150)
                     ->save("./".$thumbnailPath);
                 Image::make("./".$path)
                     ->orientate()
@@ -182,7 +197,7 @@ class PhotoController extends Controller
                 $photo->is_public = false;
                 $photo->filepath = $path;
                 $photo->thumbnail_filepath = $thumbnailPath;
-                $photo->description = "This is the description";
+                $photo->description = "";
                 $photo->save();
 
                 $content = ["id" => 1, "fileName" => $name, "originalName" => $name];

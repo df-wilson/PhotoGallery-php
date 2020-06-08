@@ -113,3 +113,8 @@ function submitTogglePublic(id)
             console.log(error);
         });
 }
+
+function showAllForKeyword()
+{
+    console.log("In showAllForKeyword");
+}

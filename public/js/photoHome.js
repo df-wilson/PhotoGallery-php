@@ -34,7 +34,9 @@ Vue.component('photo-home', {
             <div class="panel-body">
                 <div>
                     <div class="thumbnail img-preview">
-                        <img :src="photo.thumbnail_filepath" :alt="photo.description" width="200px" height="150px">
+                        <a v-bind:href="'/photos/' + photo.id">
+                            <img :src="photo.thumbnail_filepath" :alt="photo.description" width="200px" height="150px">
+                        </a>
                     </div>
                 </div>
             </div>
@@ -48,6 +50,7 @@ Vue.component('photo-home', {
           </div>
       </div>
       `,
+    props: ['keywordid', 'text', 'publicphotos', 'privatephotos', 'fromdate', 'todate'],
     data() {
         return {
             photos: [],
@@ -57,34 +60,60 @@ Vue.component('photo-home', {
             endpoint: '/api/photos'
         };
     },
+
     created() {
         this.fetch();
         this.fetchKeywords();
+        console.log("PhotoHome::created. Keyword Id is: " + this.keywordid + " text is: " + this.text + " public photos is: "+ this.publicphotos + " private photos is: " + this.privatephotos + " From Date is : " + this.fromdate);
     },
+
     mounted() {
         console.log("Photo Home mounted.")
     },
+
     filters: {
         truncate(value) {
             return value.substring(0, 70) + " ...";
         }
     },
+
     methods: {
         fetch() {
-            axios.get(this.endpoint)
-                .then(({data}) => {
-                    this.photos = data;
-                    console.log("Retrieving photos fetch " + JSON.stringify(data));
-                    //this.pageCount = data.meta.last_page;
-                });
+            if(this.keywordid || this.text) {
+                console.log("Search request.");
+                axios.get('/api/photos/search', {
+                    params: {
+                        keyword_id: this.keywordid,
+                        text: this.text,
+                        public_checkbox: this.publicphotos,
+                        private_checkbox: this.privatephotos,
+                        from_date: this.fromdate,
+                        to_date: this.todate
+                    }
+                })
+                    .then(({data}) => {
+                        this.photos = data.photos;
+                        console.log("fetch. Retrieving search photos. " + JSON.stringify(data));
+                        //this.pageCount = data.meta.last_page;
+                    });
+            } else {
+                axios.get(this.endpoint)
+                    .then(({data}) => {
+                        this.photos = data;
+                        console.log("Retrieving all photos. " + JSON.stringify(data));
+                        //this.pageCount = data.meta.last_page;
+                    });
+            }
         },
+
         fetchKeywords() {
             axios.get('/api/keywords')
                 .then(({data}) => {
-                    this.keywords = data;
-                    console.log("Retrieving keywords fetch " + JSON.stringify(data));
+                    this.keywords = data.keywords;
+                    console.log("fetchKeywords. Retrieving keywords " + JSON.stringify(data.keywords));
             });
         },
+
         keywordSelected() {
             axios.get('/api/photos/keyword/'+this.selectedKeywordId)
                 .then(({data}) => {

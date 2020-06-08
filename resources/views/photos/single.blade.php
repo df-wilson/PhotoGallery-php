@@ -34,7 +34,7 @@
                             <button id="keyword-done-btn" class="btn btn-primary btn-sm" type="button" onclick="doneAddKeyword()">Done</button>
                         </div>
                         @foreach($keywords as $keyword)
-                            <p><button class="btn">{{$keyword->name}}</button></p>
+                            <p><button class="btn" onclick="showAllForKeyword({{$keyword->name}})">{{$keyword->name}}</button></p>
                         @endforeach
                     </div>
 
