@@ -1,3 +1,17 @@
+let keywords = [];
+
+window.addEventListener("load", function()
+{
+    fetchKeywords();
+});
+
+function fetchKeywords() {
+    axios.get('/api/keywords')
+       .then(({data}) => {
+           keywords = data.keywords;
+       });
+}
+
 function doneAddKeyword()
 {
     let addKeywordForm = document.getElementById("add-keyword-form");
@@ -13,10 +27,18 @@ function showUpdateButton()
 
 function showAddKeyword()
 {
+    let keywordList = document.getElementById('keyword-options');
+
+    keywords.forEach(function(item) {
+        var option = document.createElement('option');
+        option.value = item.name;
+
+        keywordList.appendChild(option);
+    });
     let addKeywordForm = document.getElementById("add-keyword-form");
     addKeywordForm.style.display = "block";
-    window.scrollTo(0,document.body.scrollHeight);
 }
+
 function submitDescription(id)
 {
     let description = document.getElementById("desc-text").value;
@@ -46,7 +68,6 @@ function submitKeyword(photoId)
         keyword: keyword
         })
         .then(function (response) {
-            console.log(response);
             if(response.status == 201) {
                 let keywordDiv = document.getElementById("keyword-div");
                 keywordDiv.insertAdjacentHTML('beforeend',`<p><button class="btn">${keyword}</button></p>`);
@@ -57,8 +78,6 @@ function submitKeyword(photoId)
         });
 
     keywordElement.value = "";
-
-    window.scrollTo(0,document.body.scrollHeight);
 }
 
 function submitTitle(id)

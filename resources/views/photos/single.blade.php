@@ -29,7 +29,9 @@
                     <div id="keyword-div">
                         <h3>Keywords <button class="btn btn-xs btn-primary" type="button" onclick="showAddKeyword()">+</button></h3>
                         <div id="add-keyword-form">
-                            <input id="keyword-input" type="text" size="20">
+                            <input id="keyword-input" type="text" size="20" list="keyword-options">
+                            <datalist id="keyword-options">
+                            </datalist>
                             <button id="keyword-update-btn" class="btn btn-primary btn-sm" type="button" onclick="submitKeyword({{$id}})">Add</button>
                             <button id="keyword-done-btn" class="btn btn-primary btn-sm" type="button" onclick="doneAddKeyword()">Done</button>
                         </div>
@@ -40,7 +42,7 @@
 
                     <div id="public-toggle-div">
                         <input type="checkbox" id="public-checkbox" name="public-checkbox" onchange="submitTogglePublic({{$id}})">
-                        <label for="subscribeNews">Allow public views.</label>
+                        <label for="subscribeNews">Allow public</label>
                     </div>
                 </div>
             </div>
