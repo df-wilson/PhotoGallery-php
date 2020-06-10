@@ -74,7 +74,7 @@ Vue.component('photo-home', {
     filters: {
         truncate(value) {
             if(value.length > 70) {
-                return value.substring(0, 70) + " ...";
+                return value.substring(0, 66) + " ...";
             } else {
                 return value;
             }
