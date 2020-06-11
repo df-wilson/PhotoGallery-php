@@ -84,6 +84,28 @@ class PhotoSearchTest extends TestCase
                 ]
             );
 
+        $response = $this->actingAs($user)
+            ->json('GET',
+                '/api/photos/search',
+                [
+                    'keyword_id'       => '',
+                    'text'             => '',
+                    'public_checkbox'  => true,
+                    'private_checkbox' => true,
+                    'from_date'        => '',
+                    'to_date'          => ''
+                ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                                 ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
+                                 ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+                ]
+            );
+
         logger("testSearchByKeywordPublicPhotos - LEAVE");
     }
 
@@ -142,117 +164,323 @@ class PhotoSearchTest extends TestCase
         logger("testSearchByKeywordOwnPhotos - LEAVE");
     }
 
-        public function testSearchByTextPublicPhotos()
-        {
-            logger("testSearchByTextPublicPhotos - ENTER");
+    public function testSearchByTextPublicPhotos()
+    {
+        logger("testSearchByTextPublicPhotos - ENTER");
 
-            $this->seed();
+        $this->seed();
 
-            // Test public users only get public photos
-            $response = $this->json('GET',
+        // Test public users only get public photos
+        $response = $this->json('GET',
+            '/api/photos/search',
+            [
+                'keyword_id'       => '',
+                'text'             => 'Vancouver',
+                'public_checkbox'  => '',
+                'private_checkbox' => '',
+                'from_date'        => '',
+                'to_date'          => ''
+            ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
+                        ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+                ]
+            );
+
+        // test user searching only own photos when none for text
+        $user = User::find(1);
+        $response = $this->actingAs($user)
+            ->json('GET',
                 '/api/photos/search',
                 [
                     'keyword_id'       => '',
-                    'text'             => 'Vancouver',
-                    'public_checkbox'  => '',
-                    'private_checkbox' => '',
+                    'text'             => 'picture',
+                    'public_checkbox'  => true,
+                    'private_checkbox' => false,
                     'from_date'        => '',
                     'to_date'          => ''
                 ]);
 
-            $response->assertStatus(200)
-                ->assertExactJson(
-                    [
-                        'msg' => 'ok',
-                        'photos' => [["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
-                            ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                                 ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"]]
+                ]
+            );
+
+
+        // Test searching for public and private photos does not return other users private photos.
+
+        logger("testSearchByTextPublicPhotos - LEAVE");
+    }
+
+    public function testSearchByTextOwnPhotos()
+    {
+        logger("testSearchByTextOwnPhotos - LEAVE");
+
+        $this->seed();
+
+        // test user searching only own photos when none for text
+        $user = User::find(1);
+        $response = $this->actingAs($user)
+            ->json('GET',
+                '/api/photos/search',
+                [
+                    'keyword_id'       => '',
+                    'text'             => 'picture',
+                    'public_checkbox'  => '',
+                    'private_checkbox' => true,
+                    'from_date'        => '',
+                    'to_date'          => ''
+                ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"]]
+                ]
+            );
+
+        logger("testSearchByTextOwnPhotos - LEAVE");
+    }
+
+   public function testSearchByFromDatePublicPhotos()
+   {
+       logger("testSearchByFromDatePublicPhotos - ENTER");
+
+       $this->seed();
+
+       // Test public users only get public photos
+       $response = $this->json('GET',
+           '/api/photos/search',
+           [
+               'keyword_id'       => '',
+               'text'             => '',
+               'public_checkbox'  => '',
+               'private_checkbox' => '',
+               'from_date'        => '2018-05-16',
+               'to_date'          => ''
+           ]);
+
+       $response->assertStatus(200)
+           ->assertExactJson(
+               [
+                   'msg' => 'ok',
+                   'photos' => [["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
+                                ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"],
+                                ["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"]]
+               ]
+           );
+
+       // Test public users only get public photos from from_date
+       $response = $this->json('GET',
+           '/api/photos/search',
+           [
+               'keyword_id'       => '',
+               'text'             => '',
+               'public_checkbox'  => '',
+               'private_checkbox' => '',
+               'from_date'        => '2018-05-17',
+               'to_date'          => ''
+           ]);
+
+       $response->assertStatus(200)
+           ->assertExactJson(
+               [
+                   'msg' => 'ok',
+                   'photos' => [["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
+                                ["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"]]
+               ]
+           );
+
+       // test user searching only own photos when none for text
+       $user = User::find(1);
+       $response = $this->actingAs($user)
+           ->json('GET',
+               '/api/photos/search',
+               [
+                   'keyword_id'       => '',
+                   'text'             => '',
+                   'public_checkbox'  => true,
+                   'private_checkbox' => false,
+                   'from_date'        => '2018-05-17',
+                   'to_date'          => ''
+               ]);
+
+       $response->assertStatus(200)
+           ->assertExactJson(
+               [
+                   'msg' => 'ok',
+                   'photos' => [["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                       ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"]]
+               ]
+           );
+
+       logger("testSearchByFromDatePublicPhotos - LEAVE");
+   }
+
+    public function testSearchByToDatePublicPhotos()
+    {
+        logger("testSearchByToDatePublicPhotos - ENTER");
+
+        $this->seed();
+
+        // Test public users only get public photos
+        $response = $this->json('GET',
+            '/api/photos/search',
+            [
+                'keyword_id'       => '',
+                'text'             => '',
+                'public_checkbox'  => '',
+                'private_checkbox' => '',
+                'from_date'        => '',
+                'to_date'          => '2018-05-17'
+            ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [
+                        ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+                ]
+            );
+
+        // Test public users only get public photos from from_date
+        $response = $this->json('GET',
+            '/api/photos/search',
+            [
+                'keyword_id'       => '',
+                'text'             => '',
+                'public_checkbox'  => '',
+                'private_checkbox' => '',
+                'from_date'        => '',
+                'to_date'          => '2018-05-15'
+            ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => []
+                ]
+            );
+
+        // test user searching only own photos when none for text
+        $user = User::find(1);
+        $response = $this->actingAs($user)
+            ->json('GET',
+                '/api/photos/search',
+                [
+                    'keyword_id'       => '',
+                    'text'             => '',
+                    'public_checkbox'  => true,
+                    'private_checkbox' => false,
+                    'from_date'        => '',
+                    'to_date'          => '2020-06-01'
+                ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                                 ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
+                                 ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+                ]
+            );
+
+        logger("testSearchByDatePublicPhotos - LEAVE");
+    }
+    public function testSearchByFromDateToDatePublicPhotos()
+    {
+        logger("testSearchByFromDateToDatePublicPhotos - LEAVE");
+
+        $this->seed();
+
+        // Test public users only get public photos between from and to dates
+        $response = $this->json('GET',
+            '/api/photos/search',
+            [
+                'keyword_id'       => '',
+                'text'             => '',
+                'public_checkbox'  => '',
+                'private_checkbox' => '',
+                'from_date'        => '2018-05-15',
+                'to_date'          => '2018-05-17'
+            ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [
+                        ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+                ]
+            );
+
+        // Test public users only get public photos between from and to dates
+        $response = $this->json('GET',
+            '/api/photos/search',
+            [
+                'keyword_id'       => '',
+                'text'             => '',
+                'public_checkbox'  => '',
+                'private_checkbox' => '',
+                'from_date'        => '2018-05-15',
+                'to_date'          => '2020-05-15'
+            ]);
+
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [
+                        ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"],
+                        ["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"]
                     ]
-                );
+                ]
+            );
 
-            // test user searching only own photos when none for text
-            $user = User::find(1);
-            $response = $this->actingAs($user)
-                ->json('GET',
-                    '/api/photos/search',
-                    [
-                        'keyword_id'       => '',
-                        'text'             => 'picture',
-                        'public_checkbox'  => true,
-                        'private_checkbox' => false,
-                        'from_date'        => '',
-                        'to_date'          => ''
-                    ]);
+        // test logged in user
+        $user = User::find(1);
+        $response = $this->actingAs($user)
+            ->json('GET',
+                '/api/photos/search',
+                [
+                    'keyword_id'       => '',
+                    'text'             => '',
+                    'public_checkbox'  => true,
+                    'private_checkbox' => false,
+                    'from_date'        => '2018-05-17',
+                    'to_date'          => '2020-06-01'
+                ]);
 
-            $response->assertStatus(200)
-                ->assertExactJson(
-                    [
-                        'msg' => 'ok',
-                        'photos' => [["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
-                                     ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"]]
-                    ]
-                );
+        $response->assertStatus(200)
+            ->assertExactJson(
+                [
+                    'msg' => 'ok',
+                    'photos' => [
+                                   ["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                                   ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"],
+                                ]
+                ]
+            );
+        
+        logger("testSearchByFromDateToDatePublicPhotos - LEAVE");
+    }
 
-            logger("testSearchByTextPublicPhotos - LEAVE");
-        }
-
-        public function testSearchByTextOwnPhotos()
-        {
-            logger("testSearchByTextOwnPhotos - LEAVE");
-
-            $this->seed();
-            
-            // test user searching only own photos when none for text
-            $user = User::find(1);
-            $response = $this->actingAs($user)
-                ->json('GET',
-                    '/api/photos/search',
-                    [
-                        'keyword_id'       => '',
-                        'text'             => 'picture',
-                        'public_checkbox'  => '',
-                        'private_checkbox' => true,
-                        'from_date'        => '',
-                        'to_date'          => ''
-                    ]);
-
-            $response->assertStatus(200)
-                ->assertExactJson(
-                    [
-                        'msg' => 'ok',
-                        'photos' => [["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"]]
-                    ]
-                );
-
-            logger("testSearchByTextOwnPhotos - LEAVE");
-        }
     /*
-           public function testSearchByDate()
-           {
-
-           }
-
            public function testSearchByKeywordAndText()
            {
                logger("testSearchByKeywordAndText - ENTER");
-
-               $this->seed();
-
-               // Search for private photos
-               $photos = Photo::search(1, false, true, "", "", 1, "Vancouver");
-               $this->assertEquals(1, count($photos));
-               $this->assertEquals($photos[0]->id,"4");
-               $this->assertEquals($photos[0]->name, "Giraffe");
-               $this->assertEquals($photos[0]->thumbnail_filepath, "/storage/images/thumb_2012_04_09_012.jpg");
-
-               $photos = Photo::search(2, false, true, "", "", 3, "Hippo");
-               $this->assertEquals(1, count($photos));
-               $this->assertEquals($photos[0]->id,"1");
-               $this->assertEquals($photos[0]->name, "Hippo");
-               $this->assertEquals($photos[0]->thumbnail_filepath, "/storage/images/thumb_2012_04_09_014.jpg");
-
-               // Search for public photos
-
-               // Search for public and private photos
 
                logger("testSearchByKeywordAndText - LEAVE");
            }

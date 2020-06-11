@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div id="app">
-{{$keywordId}}
+<p>Search Results</p>
                     <photo-home keywordid="{{$keywordId}}" text="{{$text}}" publicphotos="{{$publicPhotos}}" privatephotos="{{$privatePhotos}}" fromdate="{{$fromDate}}" todate="{{$toDate}}"></photo-home>
                 </div>
             </div>

@@ -86,8 +86,34 @@ class Photo extends Model
             $inputs += ['text' => "%$text%"];
         }
 
+        if($startDate || $endDate) {
+            logger("Photos::search - Add date range to where clause.");
+            if($whereClause) {
+                $whereClause .= " AND ";
+            }
+
+            if($startDate && $endDate) {
+                $whereClause .= "photos.created_at BETWEEN :start_date AND :end_date";
+                $inputs += ['start_date' => $startDate, 'end_date' => $endDate];
+
+            } else if($startDate) {
+                $whereClause .= "photos.created_at >= :start_date";
+                $inputs += ['start_date' => $startDate];
+            } else if($endDate) {
+                $whereClause .= "photos.created_at <= :end_date";
+                $inputs += ['end_date' => $endDate];
+            } else {
+                Log::error("Photos::search - Error determining start and end dates.");
+            }
+        }
+
         if($publicPhotos == true && $ownPhotos == true) {
             // Get public and private photos
+            if($whereClause) {
+                $whereClause .= " AND ";
+            }
+            $whereClause .= "(is_public = :is_public OR user_id = :user_id)";
+            $inputs += ['is_public' => true, 'user_id' => $userId];
         } else if ($publicPhotos == true || $userId == 0) {
             // Public photos only
             logger("Photos::search - Public photos only.");

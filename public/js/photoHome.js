@@ -83,7 +83,7 @@ Vue.component('photo-home', {
 
     methods: {
         fetch() {
-            if(this.keywordid || this.text) {
+            if(this.keywordid || this.text || this.fromdate || this.todate || this.privatephotos || this.publicphotos) {
                 console.log("Search request.");
                 axios.get('/api/photos/search', {
                     params: {
