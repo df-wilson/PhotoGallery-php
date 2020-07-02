@@ -477,12 +477,63 @@ class PhotoSearchTest extends TestCase
         logger("testSearchByFromDateToDatePublicPhotos - LEAVE");
     }
 
-    /*
-           public function testSearchByKeywordAndText()
-           {
-               logger("testSearchByKeywordAndText - ENTER");
+        public function testSearchByKeywordAndTextPublicPhotos()
+        {
+            logger("testSearchByKeywordAndTextPublicPhotos - ENTER");
 
-               logger("testSearchByKeywordAndText - LEAVE");
+            $this->seed();
+
+            // Test public users only get public photos
+            $response = $this->json('GET',
+                '/api/photos/search',
+                [
+                    'keyword_id'       => '2',
+                    'text'             => 'Stanley Park',
+                    'public_checkbox'  => '',
+                    'private_checkbox' => '',
+                    'from_date'        => '',
+                    'to_date'          => ''
+                ]);
+
+            $response->assertStatus(200)
+                ->assertExactJson(
+                    [
+                        'msg' => 'ok',
+                        'photos' => [
+                            ["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                            ["description" => "Vancouver near Stanley Park", "id" => "1","name" => "Vancouver","thumbnail_filepath" => "/storage/images/thumb_2012_04_14_070.jpg"]]
+                    ]
+                );
+
+            // test user searching only public photos
+            $user = User::find(1);
+            $response = $this->actingAs($user)
+                ->json('GET',
+                    '/api/photos/search',
+                    [
+                        'keyword_id'       => '2',
+                        'text'             => 'picture',
+                        'public_checkbox'  => true,
+                        'private_checkbox' => false,
+                        'from_date'        => '',
+                        'to_date'          => ''
+                    ]);
+
+            $response->assertStatus(200)
+                ->assertExactJson(
+                    [
+                        'msg' => 'ok',
+                        'photos' => [["description" => "A picture of a flamingo.","id" => "4","name" => "Flamingo","thumbnail_filepath" => "/storage/images/thumb_2012_04_09_016.jpg"],
+                            ["description" => "Railroad tracks looking south towards Kerrisdale in Vancouver. The track have been removed since this picture was taken and replaced by a bike/pedestrian path.","id" => "2","name" => "Kerrisdale Tracks","thumbnail_filepath" => "/storage/images/thumb_RailroadToKerrisdale.jpg"]]
+                    ]
+                );
+
+
+            logger("testSearchByKeywordAndText - LEAVE");
+        }
+    /*
+           public function testSearchByKeywordAndTextOwnPhotos()
+           {
            }
 
            public function testSearchByKeywordAndDate()
