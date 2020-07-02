@@ -6,7 +6,7 @@ use App\Keywords;
 use App\Photo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class KeywordController extends Controller
 {
@@ -73,6 +73,44 @@ class KeywordController extends Controller
                 $code);
     }
 
+    public function removePhotoKeyword(Request $request, int $keywordId, int $photoId)
+    {
+        logger("KeywordController::removePhotoKeyword - ENTER", ["Keyword Id" => $keywordId, "Photo Id" => $photoId]);
+
+        $message = "ok";
+        $code = 200;
+        $userId = 0;
+
+        if (Auth::check()) {
+
+            $isOwner = Photo::isUserPhotoOwner(Auth::id(),$photoId);
+
+            if($isOwner) {
+                $numDeleted = Keywords::removeKeywordFromPhoto($keywordId, $photoId);
+
+                if($numDeleted == 0) {
+                    $code = 404;
+                    $message = "keyword or photo not found";
+                }
+            } else {
+                $message = "not authorized";
+                $code = 401;
+            }
+        } else {
+            $message = "not authorized";
+            $code = 401;
+        }
+
+        logger("KeywordController::removePhotoKeyword - LEAVE", ["Message" => $message, "Return code" => $code]);
+
+        return response()
+            ->json(
+                [
+                    'msg' => $message
+                ],
+                $code);
+    }
+    
     public function store(Request $request)
     {
         $this->saveKeyword(mb_strtolower($request->name));

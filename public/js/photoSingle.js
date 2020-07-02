@@ -18,6 +18,17 @@ function doneAddKeyword()
     addKeywordForm.style.display = "none";
 }
 
+function removeKeyword(photoId, keywordId)
+{
+    let keywordDivId = "keyword"+keywordId;
+    
+    axios.delete('/api/keywords/'+keywordId+'/photo/'+photoId)
+       .then(({data}) => {
+           let element = document.getElementById(keywordDivId);
+           element.parentNode.removeChild(element);
+       });
+}
+
 function showUpdateButton()
 {
     let updateButton = document.getElementById("desc-update-button");

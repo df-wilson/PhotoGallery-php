@@ -26,6 +26,7 @@ Route::get('/photos/explore/photo/{id}', 'PhotoController@showPublicPhoto');
 
 Route::get('/api/keywords', 'Api\KeywordController@getAll');
 Route::post('/api/keywords/photo/{id}', 'Api\KeywordController@addPhotoKeyword');
+Route::delete('/api/keywords/{keywordId}/photo/{photoId}', 'Api\KeywordController@removePhotoKeyword');
 
 Route::get('/api/photos/explore', 'Api\PhotoController@getAllPublic');
 Route::get('/api/photos/explore/keyword/{id}', 'Api\PhotoController@showPublicForKeyword');

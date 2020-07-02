@@ -35,7 +35,7 @@ Vue.component('photo-home', {
                 <div>
                     <div class="thumbnail img-preview">
                         <a v-bind:href="'/photos/' + photo.id">
-                            <img :src="photo.thumbnail_filepath" :alt="photo.description" width="200px" height="150px">
+                            <img :src="photo.thumbnail_filepath" :alt="photo.name" width="200px" height="150px">
                         </a>
                     </div>
                 </div>

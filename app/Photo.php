@@ -63,6 +63,22 @@ class Photo extends Model
         return $photo;
     }
 
+    public static function isUserPhotoOwner(int $userId, int $photoId)
+    {
+        $isOwner = false;
+
+        $result = DB::select("SELECT 1 FROM photos WHERE id = :photo_id AND user_id = :user_id",
+                             ["photo_id" => $photoId, "user_id" => $userId]);
+
+        if($result) {
+            $isOwner = true;
+        } else {
+            $isOwner = false;
+        }
+
+        return $isOwner;
+    }
+
     public static function search(int $userId, bool $publicPhotos, bool $ownPhotos, string $startDate, string $endDate, int $keywordId, string $text)
     {
         logger("Photos::search - ENTER", ["userId" => $userId, "Public Photos" => $publicPhotos, "Private Photos" => $ownPhotos, "Start Date" => $startDate, "End Date" => $endDate, "Keyword Id" => $keywordId, "Text" => $text]);
@@ -79,10 +95,18 @@ class Photo extends Model
 
         if($text && strlen($text) > 1) {
             logger("Photos::search - Searching for text.");
+            $existingWhereClause = false;
+
             if($whereClause) {
+                $whereClause = "(".$whereClause;
                 $whereClause .= " OR ";
+                $existingWhereClause = true;
             }
             $whereClause .= "(description LIKE :text OR name = :text)";
+
+            if($existingWhereClause) {
+                $whereClause .= ")";
+            }
             $inputs += ['text' => "%$text%"];
         }
 

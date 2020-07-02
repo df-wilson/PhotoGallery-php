@@ -134,6 +134,49 @@ class KeywordTest extends TestCase
             ]);
 
 
-        logger("TodoItemTest::testAddPhotoKeyword - Leave");
+        logger("TodoItemTest::testAddPhotoKeyword - LEAVE");
+    }
+    
+    public function testDeleteKeywordFromPhoto()
+    {
+        logger("TodoItemTest::testDeletePhotoKeyword - ENTER");
+
+        $this->seed();
+
+        // Must be an authenticated user
+        $response = $this->delete('/api/keywords/1/photo/1');
+
+        $response->assertStatus(401)
+            ->assertExactJson([
+                'msg' => 'not authorized'
+            ]);
+
+        $user = User::find(1);
+
+        // Must also own the photo
+        $response = $this->actingAs($user)->delete('/api/keywords/1/photo/3');
+
+        $response->assertStatus(401)
+            ->assertExactJson([
+                'msg' => 'not authorized'
+            ]);
+
+        // Test 404 returned if keyword does not exist for photo
+        $response = $this->actingAs($user)->delete('/api/keywords/4/photo/1');
+
+        $response->assertStatus(404)
+            ->assertExactJson([
+                'msg' => 'keyword or photo not found'
+            ]);
+
+        // Test owner can remove existing keyword
+        $response = $this->actingAs($user)->delete('/api/keywords/1/photo/1');
+
+        $response->assertStatus(200)
+            ->assertExactJson([
+                'msg' => 'ok'
+            ]);
+
+        logger("TodoItemTest::testDeletePhotoKeyword - LEAVE");
     }
 }

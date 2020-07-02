@@ -42,7 +42,7 @@ class Keywords extends Model
 
     public static function findKeywordsForPhoto($photoId)
     {
-        $keywords = DB::select('select keywords.name from keywords, photo_keywords where keywords.id = photo_keywords.keyword_id and photo_keywords.photo_id = ?', [$photoId]);
+        $keywords = DB::select('select keywords.id, keywords.name from keywords, photo_keywords where keywords.id = photo_keywords.keyword_id and photo_keywords.photo_id = ?', [$photoId]);
         return $keywords;
     }
 
@@ -62,5 +62,16 @@ class Keywords extends Model
 
         logger('Keywords::findKeywordsForPhoto - LEAVE', ["Exists" => $exists]);
         return $exists;
+    }
+
+    public static function removeKeywordFromPhoto(int $keywordId, int $photoId)
+    {
+        logger('Keywords::removeKeywordFromPhoto - ENTER', ["Photo Id" => $photoId, "Keyword Id" => $keywordId]);
+
+        $deleted = DB::delete("DELETE FROM photo_keywords WHERE photo_id = :photo_id AND keyword_id = :keyword_id",
+                              ["keyword_id" => $keywordId, "photo_id" => $photoId]);
+
+        logger('Keywords::removeKeywordFromPhoto - LEAVE', ["Deleted" => $deleted]);
+        return $deleted;
     }
 }
