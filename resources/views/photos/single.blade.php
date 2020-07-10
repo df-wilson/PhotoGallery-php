@@ -46,8 +46,12 @@
                     </div>
 
                     <div id="public-toggle-div">
-                        <input type="checkbox" id="public-checkbox" name="public-checkbox" onchange="submitTogglePublic({{$id}})">
-                        <label for="subscribeNews">Allow public</label>
+                        <input type="checkbox" id="public-checkbox" name="public-checkbox" @if($is_public) checked @endif onchange="submitTogglePublic({{$id}})">
+                        <label for="public-checkbox">Allow public</label>
+                    </div>
+                    <div id="navigation-section">
+                        <button class="btn" onclick="showPreviousPhoto({{$id}})">⇦</button>
+                        <button class="btn" onclick="showNextPhoto({{$id}})">⇨</button>
                     </div>
                 </div>
             </div>

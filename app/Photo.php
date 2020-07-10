@@ -23,11 +23,35 @@ class Photo extends Model
     public static function getForUser($userId, $photoId)
     {
         $photo = [];
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
+        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];
         }
+        return $photo;
+    }
+
+    public static function getNextForUser(int $userId, int $photoId)
+    {
+        $photo = [];
+        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id>? and photos.user_id =? and users.id = photos.user_id order by photos.id', [$photoId, $userId]);
+
+        if(count($result)) {
+            $photo = $result[0];
+        }
+
+        return $photo;
+    }
+
+    public static function getPreviousForUser(int $userId, int $photoId)
+    {
+        $photo = [];
+        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id<? and photos.user_id =? and users.id = photos.user_id order by photos.id DESC', [$photoId, $userId]);
+
+        if(count($result)) {
+            $photo = $result[0];
+        }
+
         return $photo;
     }
 

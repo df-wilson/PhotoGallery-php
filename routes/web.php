@@ -24,6 +24,9 @@ Route::post('/photos/search', 'PhotoController@searchSubmit');
 Route::get('/photos/{id}', 'PhotoController@show');
 Route::get('/photos/explore/photo/{id}', 'PhotoController@showPublicPhoto');
 
+Route::get('/photos/{id}/next', 'PhotoController@showNext');
+Route::get('/photos/{id}/prev', 'PhotoController@showPrev');
+
 Route::get('/api/keywords', 'Api\KeywordController@getAll');
 Route::post('/api/keywords/photo/{id}', 'Api\KeywordController@addPhotoKeyword');
 Route::delete('/api/keywords/{keywordId}/photo/{photoId}', 'Api\KeywordController@removePhotoKeyword');

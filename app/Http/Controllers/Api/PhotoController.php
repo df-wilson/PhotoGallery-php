@@ -39,7 +39,7 @@ class PhotoController extends Controller
 
         return $photo;
     }
-
+    
     public function search(Request $request)
     {
         logger("Api/PhotoController::search - ENTER", ["Data" => $request->all()]);

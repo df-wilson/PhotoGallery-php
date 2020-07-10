@@ -72,11 +72,72 @@ class PhotoController extends Controller
             if($photo) {
                 $keywords = Keywords::findKeywordsForPhoto($id);
                 logger("Keywords are ", ["Keywords" => $keywords]);
-                return view('photos.single', ['name' => $photo->name, 'description' => $photo->description, 'src' => $photo->filepath, 'id' => $photo->id, 'keywords' => $keywords]);
+                return view('photos.single',
+                            [
+                                'name' => $photo->name,
+                                'description' => $photo->description,
+                                'src' => $photo->filepath,
+                                'id' => $photo->id,
+                                'is_public' => $photo->is_public,
+                                'keywords' => $keywords
+                            ]);
 
             } else {
                 return "Photo not found.";
             }
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public function showNext($photoId)
+    {
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $photo = Photo::getNextForUser($userId, $photoId);
+
+            // If the next photo doesn't exist, show the current one
+            if(!$photo) {
+                $photo = Photo::getForUser($userId, $photoId);
+            }
+
+            $keywords = Keywords::findKeywordsForPhoto($photo->id);
+            logger("Keywords are ", ["Keywords" => $keywords]);
+            return view('photos.single',
+                        [
+                            'name' => $photo->name,
+                            'description' => $photo->description,
+                            'src' => $photo->filepath,
+                            'id' => $photo->id,
+                            'is_public' => $photo->is_public,
+                            'keywords' => $keywords
+                        ]);
+        } else {
+            return redirect('/login');
+        }
+    }
+
+    public function showPrev($photoId)
+    {
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $photo = Photo::getPreviousForUser($userId, $photoId);
+
+            // If the previous photo doesn't exist, show the current one
+            if(!$photo) {
+                $photo = Photo::getForUser($userId, $photoId);
+            }
+
+            $keywords = Keywords::findKeywordsForPhoto($photo->id);
+            logger("Keywords are ", ["Keywords" => $keywords]);
+            return view('photos.single',
+                        ['name' => $photo->name,
+                            'description' => $photo->description,
+                            'src' => $photo->filepath,
+                            'id' => $photo->id,
+                            'is_public' => $photo->is_public,
+                            'keywords' => $keywords
+                        ]);
         } else {
             return redirect('/login');
         }

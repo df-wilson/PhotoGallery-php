@@ -29,6 +29,16 @@ function removeKeyword(photoId, keywordId)
        });
 }
 
+function showNextPhoto(photoId)
+{
+    window.location.href ='/photos/'+photoId+'/next';
+}
+
+function showPreviousPhoto(photoId)
+{
+    window.location.href ='/photos/'+photoId+'/prev';
+}
+
 function showUpdateButton()
 {
     let updateButton = document.getElementById("desc-update-button");
