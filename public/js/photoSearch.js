@@ -1,7 +1,7 @@
 Vue.component('photo-search', {
     template: `
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
         <h1 class="text-center">Search Photos</h1>
         <form id="search-form" action="/photos/search" method="post">
         <input type="hidden" name="_token" :value="csrf">

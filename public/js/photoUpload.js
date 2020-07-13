@@ -5,44 +5,46 @@ const BASE_URL = 'http://localhost:8000';
 Vue.component('photo-upload-form', {
     template:
     `
-      <div class="container">
-      
-        <!--UPLOAD-->
-        <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-          <h1>Upload images</h1>
-          <div class="dropbox">
-            <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-              <p v-if="isInitial">
-                Drag your file(s) here to begin<br> or click to browse
+      <div id="upload">
+        <div class="row">
+          <div class="col-12">
+            <!--UPLOAD-->
+            <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+              <div class="dropbox">
+                <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
+                  <p v-if="isInitial">
+                    Drag your file(s) here to begin<br> or click to browse
+                  </p>
+                  <p v-if="isSaving">
+                    Uploading {{ fileCount }} files...
+                  </p>
+              </div>
+            </form>
+            
+            <!--SUCCESS-->
+            <div v-if="isSuccess">
+              <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
+               <p>
+                  <a href="javascript:void(0)" @click="reset()">Upload Again</a>
+                  <a href="/" @click="reset()" style="margin-left: 1em">All Photos</a>
+               </p>
+               <ul class="list-unstyled">
+                 <li v-for="item in uploadedFiles">
+                   <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
+                 </li>
+               </ul>
+            </div>
+            
+            <!--FAILED-->
+            <div v-if="isFailed">
+              <h2>Uploaded failed.</h2>
+              <p>
+                <a href="javascript:void(0)" @click="reset()">Try again</a>
               </p>
-              <p v-if="isSaving">
-                Uploading {{ fileCount }} files...
-              </p>
-          </div>
-        </form>
-        
-        <!--SUCCESS-->
-        <div v-if="isSuccess">
-          <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
-           <p>
-              <a href="javascript:void(0)" @click="reset()">Upload Again</a>
-              <a href="/" @click="reset()" style="margin-left: 1em">All Photos</a>
-           </p>
-           <ul class="list-unstyled">
-             <li v-for="item in uploadedFiles">
-               <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
-             </li>
-           </ul>
-        </div>
-        
-        <!--FAILED-->
-        <div v-if="isFailed">
-          <h2>Uploaded failed.</h2>
-          <p>
-            <a href="javascript:void(0)" @click="reset()">Try again</a>
-          </p>
-          <pre>{{ uploadError }}</pre>
-        </div>
+              <pre>{{ uploadError }}</pre>
+            </div>          
+          </div>        
+        </div>      
       </div>
     `,
     data()

@@ -1,3 +1,11 @@
+body {
+    max-width: 1200px;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
 .dropbox {
     outline: 2px dashed grey; /* the dash box */
     outline-offset: -10px;
@@ -27,13 +35,9 @@
     padding: 50px 0;
 }
 
-body {
-    max-width: 1200px;
-}
-
 .img-preview {
-    width: 220px;
-    height: 160px;
+    width: 200px;
+    height: 150px;
 }
 
 .img-desc {
@@ -45,6 +49,10 @@ body {
     margin: 1em auto;
 }
 
+.keyword-search {
+    margin-bottom:15px;
+}
+
 .responsive-image {
     max-width: 100%;
     height: auto;
@@ -52,10 +60,6 @@ body {
 
 #desc-text {
     margin: 1em auto;
-}
-
-#img-title {
-    /*margin-bottom: 2em;*/
 }
 
 #img-title-edit {
@@ -74,8 +78,8 @@ body {
     margin-bottom: 1em;
 }
 
-.keyword-search {
-    margin-bottom:15px;
+#text-search {
+    max-width: 400px;
 }
 
 #keyword-div {

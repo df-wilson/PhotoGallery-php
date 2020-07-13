@@ -2,32 +2,28 @@
 
 @section('content')
     <div id="app">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div id="img-title" onmousedown="editTitle()">
-                        <h1 id="img-title-text" class="text-center">{{$name}}</h1>
-                    </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="img-title">
+                    <h1 id="img-title-text" class="text-center">{{$name}}</h1>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12 col-md-10">
-                    <div class="img-area">
-                        <img src="{{$src}}" alt="{{$name}}" class="responsive-image">
-                        <p>
-                            <b>Description:</b><br>
-                            {{$description}}
-                        </p>
-                    </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-9 col-lg-10">
+                <div class="img-area " style="text-align: center">
+                    <img src="{{$src}}" alt="{{$name}}" class="responsive-image">
                 </div>
-                <div class="col-xs-12 col-md-2">
+                <h2>Description</h2>
+                {{$description}}
+            </div>
+            <div class="col-12 col-md-3 col-lg-2">
+                <div id="keyword-div">
+                    <h2>Keywords</h2>
                     <div id="keyword-div">
-                        <h3>Keywords</h3>
-                        <div id="keyword-div">
-                            @foreach($keywords as $keyword)
-                                <p><button class="btn btn-sm">{{$keyword->name}}</button></p>
-                            @endforeach
-                        </div>
+                        @foreach($keywords as $keyword)
+                            <p><button class="btn btn-sm btn-light">{{$keyword->name}}</button></p>
+                        @endforeach
                     </div>
                 </div>
             </div>

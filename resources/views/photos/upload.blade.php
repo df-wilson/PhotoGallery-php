@@ -2,14 +2,12 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="app">
-                    <photo-upload-form></photo-upload-form>
-                </div>
-            </div>
+        <h1 class="text-center">Upload images</h1>
+        <div id="app">
+            <photo-upload-form></photo-upload-form>
         </div>
     </div>
+
 @endsection
 
 @section('javascript')

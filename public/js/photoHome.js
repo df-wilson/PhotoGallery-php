@@ -16,38 +16,48 @@ Vue.component('photo-single', {
 Vue.component('photo-home', {
     template: `
       <div>
-        <h1 class="text-center">Photo App</h1>
-        <div class="keyword-search">
-            Keyword Search:
-            <select name="keyword-select" v-model="selectedKeywordId">
-                <option disabled value="">Keywords</option>
-                <option v-bind:value="0" v-on:click="keywordSelected">all</option>
-                <option v-for="keyword in keywords" v-bind:value="keyword.id" v-on:click="keywordSelected">
-                {{keyword.name}}
-                </option>
-            </select>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center">Photo App</h1>
+                <div class="keyword-search">
+                    Keyword Search:
+                    <select name="keyword-select" v-model="selectedKeywordId">
+                        <option disabled value="">Keywords</option>
+                        <option v-bind:value="0" v-on:click="keywordSelected">all</option>
+                        <option v-for="keyword in keywords" v-bind:value="keyword.id" v-on:click="keywordSelected">
+                        {{keyword.name}}
+                        </option>
+                    </select>
+                </div>            
+            </div>
         </div>
-          <div class="panel panel-default col-xs-8 col-sm-6 col-md-4 col-lg-3" v-for="photo in photos">
-            <div class="panel-heading">
-                <label id="started">Name</label> <a v-bind:href="'/photos/' + photo.id">{{ photo.name }}</a>
-            </div>
-            <div class="panel-body">
-                <div>
-                    <div class="thumbnail img-preview">
-                        <a v-bind:href="'/photos/' + photo.id">
-                            <img :src="photo.thumbnail_filepath" :alt="photo.name" width="200px" height="150px">
-                        </a>
-                    </div>
+        
+        <div class="row">
+          <div class="col-8 col-md-6 col-lg-4 col-xl-3" v-for="photo in photos">
+            <div class="card mb-4">
+              <div class="card-header">
+                <div class="card-title">
+                  <label id="started">Name</label> <a v-bind:href="'/photos/' + photo.id">{{ photo.name }}</a>
+                </div>                
+              </div>
+              <div>
+                <div class="card-img">
+                  <div class="img-preview mx-auto">
+                    <a v-bind:href="'/photos/' + photo.id">
+                      <img :src="photo.thumbnail_filepath" :alt="photo.name" width="200px" height="150px">
+                    </a>
+                  </div>
                 </div>
-            </div>
-            <div class="panel-footer">
-            <p style="height: 50px">
-               <b>Description</b><br>
-               {{ photo.description | truncate}}
-            </p>
-            </div>
-            <!--<photo-single v-bind:path="photo.filepath" v-bind:alt="photo.description"></photo-single>-->
+              </div>
+              <div class="card-footer">
+                <p style="height: 50px">
+                   <b>Description</b><br>
+                   {{ photo.description | truncate}}
+                </p>
+              </div> 
+            </div>        
           </div>
+        </div>
       </div>
       `,
     props: ['keywordid', 'text', 'publicphotos', 'privatephotos', 'fromdate', 'todate'],
