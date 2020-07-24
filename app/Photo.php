@@ -30,7 +30,7 @@ class Photo extends Model
         }
         return $photo;
     }
-
+    
     public static function getNextForUser(int $userId, int $photoId)
     {
         $photo = [];

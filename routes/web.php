@@ -23,6 +23,7 @@ Route::post('/photos/search', 'PhotoController@searchSubmit');
 
 Route::get('/photos/{id}', 'PhotoController@show');
 Route::get('/photos/explore/photo/{id}', 'PhotoController@showPublicPhoto');
+Route::get('/photos/keywords/{keywordId}', 'PhotoController@showPhotosWithKeyword');
 
 Route::get('/photos/{id}/next', 'PhotoController@showNext');
 Route::get('/photos/{id}/prev', 'PhotoController@showPrev');

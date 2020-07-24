@@ -117,6 +117,25 @@ class PhotoController extends Controller
         }
     }
 
+    public function showPhotosWithKeyword(int $keywordId)
+    {
+        if (Auth::check()) {
+            $userId = Auth::id();
+
+            return view('photos.search-results',
+                [
+                    'keywordId' => $keywordId,
+                    'text' => "",
+                    'publicPhotos' => false,
+                    'privatePhotos' => true,
+                    'fromDate' => "",
+                    'toDate'   => ""
+                ]);
+        } else {
+            return redirect('/login');
+        }
+    }
+
     public function showPrev($photoId)
     {
         if (Auth::check()) {

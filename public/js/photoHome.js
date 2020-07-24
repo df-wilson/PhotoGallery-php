@@ -74,11 +74,9 @@ Vue.component('photo-home', {
     created() {
         this.fetch();
         this.fetchKeywords();
-        console.log("PhotoHome::created. Keyword Id is: " + this.keywordid + " text is: " + this.text + " public photos is: "+ this.publicphotos + " private photos is: " + this.privatephotos + " From Date is : " + this.fromdate);
     },
 
     mounted() {
-        console.log("Photo Home mounted.")
     },
 
     filters: {
@@ -94,7 +92,7 @@ Vue.component('photo-home', {
     methods: {
         fetch() {
             if(this.keywordid || this.text || this.fromdate || this.todate || this.privatephotos || this.publicphotos) {
-                console.log("Search request.");
+
                 axios.get('/api/photos/search', {
                     params: {
                         keyword_id: this.keywordid,
@@ -107,15 +105,11 @@ Vue.component('photo-home', {
                 })
                     .then(({data}) => {
                         this.photos = data.photos;
-                        console.log("fetch. Retrieving search photos. " + JSON.stringify(data));
-                        //this.pageCount = data.meta.last_page;
                     });
             } else {
                 axios.get(this.endpoint)
                     .then(({data}) => {
                         this.photos = data;
-                        console.log("Retrieving all photos. " + JSON.stringify(data));
-                        //this.pageCount = data.meta.last_page;
                     });
             }
         },
@@ -124,7 +118,6 @@ Vue.component('photo-home', {
             axios.get('/api/keywords')
                 .then(({data}) => {
                     this.keywords = data.keywords;
-                    console.log("fetchKeywords. Retrieving keywords " + JSON.stringify(data.keywords));
             });
         },
 
@@ -132,7 +125,6 @@ Vue.component('photo-home', {
             axios.get('/api/photos/keyword/'+this.selectedKeywordId)
                 .then(({data}) => {
                     this.photos = data;
-                    console.log("Retrieving keywords fetch " + JSON.stringify(data));
                 });
         }
     }

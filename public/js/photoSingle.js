@@ -154,7 +154,9 @@ function submitTogglePublic(id)
         });
 }
 
-function showAllForKeyword()
+function showAllForKeyword(keywordId)
 {
-    console.log("In showAllForKeyword");
+    console.log("In showAllForKeyword. KeywordId: " + keywordId);
+    
+    window.location.href = '/photos/keywords/'+keywordId;
 }
