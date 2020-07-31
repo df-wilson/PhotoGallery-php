@@ -60,6 +60,17 @@ function showAddKeyword()
     addKeywordForm.style.display = "block";
 }
 
+function showKeywordEditBtns()
+{
+    const editLink = document.getElementById("keyword-edit-link");
+    editLink.style.display = "none";
+    
+    const editButtons = document.querySelectorAll('.keyword-edit');
+    editButtons.forEach(element => {
+        element.style.display = "inline-block";
+    });
+}
+
 function submitDescription(id)
 {
     let description = document.getElementById("desc-text").value;

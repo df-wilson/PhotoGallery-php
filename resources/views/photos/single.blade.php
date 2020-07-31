@@ -26,7 +26,7 @@
             </div>
             <div class="col-12 col-md-3 col-lg-2">
                 <div id="keyword-div">
-                    <h2>Keywords <button class="btn btn-sm btn-primary" type="button" onclick="showAddKeyword()">+</button></h2>
+                    <h2>Keywords <button class="btn btn-sm btn-primary keyword-edit" type="button" onclick="showAddKeyword()">+</button><span id="keyword-edit-link">(<a href="#edit" onclick="showKeywordEditBtns()">edit</a>)</span></h2>
                     <div id="add-keyword-form">
                         <input id="keyword-input" type="text" size="20" list="keyword-options">
                         <datalist id="keyword-options">
@@ -38,7 +38,7 @@
                         <div id="keyword{{$keyword->id}}">
                             <p>
                                 <button class="btn btn-light" onclick="showAllForKeyword({{$keyword->id}})">{{$keyword->name}}</button>
-                                <button class="btn btn-sm btn-danger" type="button" onclick="removeKeyword({{$id}},{{$keyword->id}})">x</button>
+                                <button class="btn btn-sm btn-danger keyword-edit" type="button" onclick="removeKeyword({{$id}},{{$keyword->id}})">x</button>
                             </p>
                         </div>
                     @endforeach
