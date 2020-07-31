@@ -36,10 +36,8 @@
                     </div>
                     @foreach($keywords as $keyword)
                         <div id="keyword{{$keyword->id}}">
-                            <p>
-                                <button class="btn btn-light" onclick="showAllForKeyword({{$keyword->id}})">{{$keyword->name}}</button>
-                                <button class="btn btn-sm btn-danger keyword-edit" type="button" onclick="removeKeyword({{$id}},{{$keyword->id}})">x</button>
-                            </p>
+                            <button class="btn btn-light" onclick="showAllForKeyword({{$keyword->id}})">{{$keyword->name}}</button>
+                            <button class="btn btn-sm btn-danger keyword-edit" type="button" onclick="removeKeyword({{$id}},{{$keyword->id}})">x</button>
                         </div>
                     @endforeach
                 </div>
