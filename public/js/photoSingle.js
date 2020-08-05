@@ -5,7 +5,8 @@ window.addEventListener("load", function()
     fetchKeywords();
 });
 
-function fetchKeywords() {
+function fetchKeywords() 
+{
     axios.get('/api/keywords')
        .then(({data}) => {
            keywords = data.keywords;
@@ -43,7 +44,6 @@ function showUpdateButton()
 {
     let updateButton = document.getElementById("desc-update-button");
     updateButton.style.display = "block";
-
 }
 
 function showAddKeyword()
@@ -167,7 +167,5 @@ function submitTogglePublic(id)
 
 function showAllForKeyword(keywordId)
 {
-    console.log("In showAllForKeyword. KeywordId: " + keywordId);
-    
     window.location.href = '/photos/keywords/'+keywordId;
 }

@@ -75,14 +75,13 @@ Vue.component('photo-upload-form', {
     {
         reset()
         {
-            // reset form to initial state
             this.currentStatus = STATUS_INITIAL;
             this.uploadedFiles = [];
             this.uploadError = null;
         },
+
         save(formData)
         {
-            // upload data to the server
             this.currentStatus = STATUS_SAVING;
 
             this.upload(formData)
@@ -106,28 +105,25 @@ Vue.component('photo-upload-form', {
                 .catch(function(error) {
                     console.log(error);
                 })
-            // get data
+
                 .then(x => x.data)
-                // add url field
+
                 .then(x => x.map(img => Object.assign({},
                     img, { url: `${BASE_URL}/images/${img.id}` })));
         },
 
         filesChange(fieldName, fileList)
         {
-            // handle file changes
             const formData = new FormData();
 
             if (!fileList.length) return;
 
-            // append the files to FormData
             Array
                 .from(Array(fileList.length).keys())
                 .map(x => {
                     formData.append(fieldName, fileList[x], fileList[x].name);
                 });
-
-            // save it
+            
             this.save(formData);
         }
     },

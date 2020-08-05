@@ -4,6 +4,5 @@ new Vue({
         currentview: 'photo-single'
     },
     mounted() {
-        console.log("Vue mounted.")
     }
-})
+});
