@@ -92,10 +92,9 @@ Vue.component('photo-upload-form', {
                 .catch(err => {
                     this.uploadError = err.response;
                     this.currentStatus = STATUS_FAILED;
+                    console.log("Error: " + this.uploadError);
+                    console.log("Status: " + this.currentStatus);
                 });
-
-            console.log("Result: " + this.uploadedFiles);
-            console.log("Status: " + this.currentStatus);
         },
 
         upload(formData)
@@ -103,7 +102,7 @@ Vue.component('photo-upload-form', {
             const url = `${BASE_URL}/api/photos/upload`;
             return axios.post(url, formData)
                 .catch(function(error) {
-                    console.log(error);
+                    console.log("PhotoUpload::upload. Error: " + error);
                 })
 
                 .then(x => x.data)
