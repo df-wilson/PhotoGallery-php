@@ -18,15 +18,20 @@ class PhotoController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        logger("PhotoController::index ENTER", ["User Id" => $userId]);
+
+        logger("Api/PhotoController::index ENTER", ["User Id" => $userId]);
+
         $photos = Photo::getAllForUser($userId);
-        logger("PhotoController::index LEAVE", ["Photos" => $photos]);
+
+        logger("Api/PhotoController::index LEAVE", ["Photos" => $photos]);
 
         return $photos;
     }
 
     public function getAllPublic()
     {
+        logger("Api/PhotoController::getAllPublic - ENTER");
+
         $photos = Photo::getAllPublic();
 
         return $photos;
@@ -35,6 +40,10 @@ class PhotoController extends Controller
     public function show($photoId)
     {
         $userId = Auth::id();
+
+        logger("Api/PhotoController::show - ENTER",
+               ["User Id" => $userId, "Photo Id" => $photoId]);
+
         $photo = Photo::getforUser($userId, $photoId);
 
         return $photo;
@@ -70,11 +79,14 @@ class PhotoController extends Controller
         $photos = Photo::search($userId, $viewPublic, $viewPrivate, $fromDate, $toDate, $keywordId, $text);
 
         logger("Api/PhotoController::search - LEAVE", ["Photos" => $photos]);
+
         return response()->json(['msg' => 'ok','photos' => $photos]);
     }
 
     public function showForKeyword(Request $request, $keywordId)
     {
+        logger("Api/PhotoController::showForKeyword: ENTER $keywordId");
+
         $userId = Auth::id();
         $keywordId = intval($keywordId);
 
@@ -93,7 +105,7 @@ class PhotoController extends Controller
 
     public function showPublicForKeyword($keywordId)
     {
-        logger("PhotoController::showPublicForKeyword: ENTER $keywordId");
+        logger("Api/PhotoController::showPublicForKeyword: ENTER $keywordId");
 
         $keywordId = intval($keywordId);
 
@@ -108,7 +120,7 @@ class PhotoController extends Controller
 
     public function updateDescription(Request $request, $photoId)
     {
-        logger("PhotoController::updateDescription: ENTER $photoId");
+        logger("Api/PhotoController::updateDescription: ENTER $photoId");
 
         $code = 500;
         $message = "Server Error";
@@ -125,11 +137,16 @@ class PhotoController extends Controller
             $message = "photo does not belong to user.";
         }
 
+        logger("Api/PhotoController::updateDescription. LEAVE",
+            ["Message" => $message, "Status Code" => $code]);
+
         return response($message, $code);
     }
 
     public function updateIsPublic(Request $request, $photoId)
     {
+        logger("Api/PhotoController::updateIsPublic. ENTER", ["Photo Id" => $photoId]);
+
         $code = 500;
         $message = "Server Error";
         $userId = Auth::id();
@@ -145,11 +162,17 @@ class PhotoController extends Controller
             $message = "photo does not belong to user.";
         }
 
+        logger("Api/PhotoController::updateIsPublic. LEAVE",
+               ["Message" => $message, "Status Code" => $code]);
+
         return response($message, $code);
     }
 
     public function updateTitle(Request $request, $id)
     {
+        logger("Api/PhotoController::updateTitle. ENTER",
+               ["Photo Id" => $id]);
+
         $code = 500;
         $message = "Server Error";
         $userId = Auth::id();
@@ -165,12 +188,15 @@ class PhotoController extends Controller
             $message = "photo does not belong to user.";
         }
 
+        logger("Api/PhotoController::updateTitle. LEAVE",
+            ["Message" => $message, "Status Code" => $code]);
+
         return response($message, $code);
     }
 
     public function upload(Request $request)
     {
-        logger("PhotoController::upload. " . $request);
+        logger("Api/PhotoController::upload. ENTER");
 
         $userId = Auth::id();
 
@@ -203,6 +229,10 @@ class PhotoController extends Controller
                 $content = ["id" => 1, "fileName" => $name, "originalName" => $name];
                 array_push($returnData, $content);
             }
+        }
+        else
+        {
+            logger()->error("Api/PhotoController::upload - No file in request.");
         }
 
         return $returnData;
