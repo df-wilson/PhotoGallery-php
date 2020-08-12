@@ -11,5 +11,5 @@
 @endsection
 
 @section('javascript')
-    <script src="/js/photoUpload.js"></script>
+
 @endsection
