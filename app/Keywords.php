@@ -9,7 +9,7 @@ class Keywords extends Model
 {
     public static function allKeywordNames()
     {
-       return DB::select('select id, name from keywords');
+       return DB::select('SELECT id, name FROM keywords ORDER BY name');
     }
 
     public static function findOrCreateId(string $keyword)
