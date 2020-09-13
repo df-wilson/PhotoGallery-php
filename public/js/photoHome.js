@@ -18,7 +18,7 @@ Vue.component('photo-home', {
       <div>
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center">Photo App</h1>
+                <h1 class="text-center">Photo Gallery</h1>
                 <div class="keyword-search">
                     Keyword Search:
                     <select name="keyword-select" v-model="selectedKeywordId">
