@@ -86,11 +86,19 @@ function submitDescription(id)
         });
 }
 
+function checkKeywordInputForEnter(event, photoId)
+{
+    if(event.keyCode === 13){
+        event.preventDefault();
+        
+        submitKeyword(photoId);
+    }
+}
+
 function submitKeyword(photoId)
 {
     let keywordElement = document.getElementById("keyword-input");
-    let keyword = keywordElement.value;
-    keyword.trim();
+    let keyword = keywordElement.value.trim();
 
     if(keyword.length < 1) {
         return;

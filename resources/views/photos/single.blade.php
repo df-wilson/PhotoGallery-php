@@ -28,7 +28,7 @@
                 <div id="keyword-div">
                     <h2>Keywords <button class="btn btn-sm btn-primary keyword-edit" type="button" onclick="showAddKeyword()">+</button><span id="keyword-edit-link">(<a href="#edit" onclick="showKeywordEditBtns()">edit</a>)</span></h2>
                     <div id="add-keyword-form">
-                        <input id="keyword-input" type="text" size="20" list="keyword-options">
+                        <input id="keyword-input" type="text" size="20" list="keyword-options" onkeypress="checkKeywordInputForEnter(event, {{$id}})">
                         <datalist id="keyword-options">
                         </datalist>
                         <button id="keyword-update-btn" class="btn btn-primary btn-sm" type="button" onclick="submitKeyword({{$id}})">Add</button>
