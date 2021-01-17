@@ -1,6 +1,5 @@
 
 const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
-const BASE_URL = 'http://localhost:8000';
 
 Vue.component('photo-upload-form', {
     template:
@@ -99,16 +98,16 @@ Vue.component('photo-upload-form', {
 
         upload(formData)
         {
-            const url = `${BASE_URL}/api/photos/upload`;
+            const url = `/api/photos/upload`;
             return axios.post(url, formData)
                 .catch(function(error) {
                     console.log("PhotoUpload::upload. Error: " + error);
                 })
 
-                .then(x => x.data)
+                .then(x => x.data.data)
 
                 .then(x => x.map(img => Object.assign({},
-                    img, { url: `${BASE_URL}/images/${img.id}` })));
+                    img, { url: `/images/${img.id}` })));
         },
 
         filesChange(fieldName, fileList)

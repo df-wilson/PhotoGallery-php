@@ -200,9 +200,12 @@ class PhotoController extends Controller
 
         $userId = Auth::id();
 
+        $message = "Server error.";
+        $code = 500;
         $returnData = [];
+
         $files = $request->file('photos');
-        if ($request->hasFile('photos')) {
+        if ($files) {
             foreach($files as $file) {
                 $name = $file->getClientOriginalName();
                 $extension = $file->extension();
@@ -228,13 +231,20 @@ class PhotoController extends Controller
 
                 $content = ["id" => 1, "fileName" => $name, "originalName" => $name];
                 array_push($returnData, $content);
+                logger("Api/PhotoController::upload. File uploaded",
+                    ["User Id"=>$userId, "Photo name" => $name]);
             }
+
+            $message = "ok";
+            $code=200;
         }
         else
         {
             logger()->error("Api/PhotoController::upload - No file in request.");
+            $message = "No photos uploaded.";
+            $code = 400;
         }
 
-        return $returnData;
+        return response(["msg" => $message, "data" => $returnData], $code);
     }
 }
