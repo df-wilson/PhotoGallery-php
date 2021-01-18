@@ -229,10 +229,10 @@ class PhotoController extends Controller
                 $photo->description = "";
                 $photo->save();
 
-                $content = ["id" => 1, "fileName" => $name, "originalName" => $name];
+                $content = ["id" => $photo->id, "fileName" => $name, "originalName" => $name];
                 array_push($returnData, $content);
                 logger("Api/PhotoController::upload. File uploaded",
-                    ["User Id"=>$userId, "Photo name" => $name]);
+                    ["User Id"=>$userId, "Photo Id"=>$photo->id, "Photo name" => $name]);
             }
 
             $message = "ok";
