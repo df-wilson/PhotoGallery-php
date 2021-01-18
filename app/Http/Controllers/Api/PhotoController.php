@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Auth;
+use Illuminate\Support\Facades\Storage;
 use Image;
 use App\Photo;
 use Illuminate\Http\Request;
@@ -229,7 +230,7 @@ class PhotoController extends Controller
                 $photo->description = "";
                 $photo->save();
 
-                $content = ["id" => $photo->id, "fileName" => $name, "originalName" => $name];
+                $content = ["id" => $photo->id, "fileName" => "thumb_$name", "originalName" => $name];
                 array_push($returnData, $content);
                 logger("Api/PhotoController::upload. File uploaded",
                     ["User Id"=>$userId, "Photo Id"=>$photo->id, "Photo name" => $name]);

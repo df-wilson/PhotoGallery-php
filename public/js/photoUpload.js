@@ -107,7 +107,7 @@ Vue.component('photo-upload-form', {
                 .then(x => x.data.data)
 
                 .then(x => x.map(img => Object.assign({},
-                    img, { url: `/images/${img.id}` })));
+                    img, { url: `/images/${img.fileName}` })));
         },
 
         filesChange(fieldName, fileList)

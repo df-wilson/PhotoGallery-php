@@ -20,9 +20,11 @@ class Photo extends Model
         return DB::select('select photos.id, photos.name, photos.description, photos.thumbnail_filepath, photos.filepath from photos where is_public=1 order by photos.created_at');
     }
 
-    public static function getForUser($userId, $photoId)
+    public static function getForUser(int $userId, int $photoId)
     {
-        $photo = [];
+        logger("Enter Photo::getForUser", ["User Id" => $userId, "PhotoId" => $photoId]);
+
+        $photo = null;
         $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
 
         if(count($result)) {
