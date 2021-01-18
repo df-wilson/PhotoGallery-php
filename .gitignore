@@ -12,3 +12,4 @@ yarn-error.log
 bootstrap.min.css.map
 .env
 .phpunit*
+composer.lock
