@@ -35,8 +35,8 @@
                         <button id="keyword-done-btn" class="btn btn-primary btn-sm" type="button" onclick="doneAddKeyword()">Done</button>
                     </div>
                     @foreach($keywords as $keyword)
-                        <div id="keyword{{$keyword->id}}">
-                            <button class="btn btn-light" onclick="showAllForKeyword({{$keyword->id}})">{{$keyword->name}}</button>
+                        <div id="keyword{{$keyword->id}}" class="mb-1">
+                            <button class="btn btn-xs btn-light" onclick="showAllForKeyword({{$keyword->id}})">{{$keyword->name}}</button>
                             <button class="btn btn-xs btn-danger keyword-edit" type="button" onclick="removeKeyword({{$id}},{{$keyword->id}})">x</button>
                         </div>
                     @endforeach
