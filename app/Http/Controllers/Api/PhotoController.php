@@ -199,11 +199,16 @@ class PhotoController extends Controller
     {
         logger("Api/PhotoController::upload. ENTER");
 
-        $userId = Auth::id();
-
         $message = "Server error.";
         $code = 500;
         $returnData = [];
+
+        $userId = Auth::id();
+        if(!$userId) {
+            logger()->error("Api/PhotoController::upload - User not authorized.");
+            $code = 401;
+            return response(["msg" => $message, "data" => $returnData], $code);
+        }
 
         $files = $request->file('photos');
         if ($files) {
