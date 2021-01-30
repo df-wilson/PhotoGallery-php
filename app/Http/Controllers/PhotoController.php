@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 use App\Keywords;
 use App\Photo;
 
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PhotoController extends Controller
 {
@@ -63,14 +63,16 @@ class PhotoController extends Controller
         return view('photos.explore');
     }
 
-    public function show($id)
+    public function show(int $photoId)
     {
+        logger("PhotoController::show Enter", ["Photo Id" => $photoId]);
+
         if (Auth::check()) {
             $userId = Auth::id();
-            $photo = Photo::getForUser($userId, $id);
+            $photo = Photo::getForUser($userId, $photoId);
 
             if($photo) {
-                $keywords = Keywords::findKeywordsForPhoto($id);
+                $keywords = Keywords::findKeywordsForPhoto($photoId);
                 logger("Keywords are ", ["Keywords" => $keywords]);
                 return view('photos.single',
                             [
