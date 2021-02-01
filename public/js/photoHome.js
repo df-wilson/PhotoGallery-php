@@ -21,14 +21,16 @@ Vue.component('photo-home', {
                <h1 class="text-center">Photo Gallery</h1>
                <div class="keyword-search">
                    Keyword Search:
-                   <select name="keyword-select" v-model="selectedKeywordId">
+                   <select name="keyword-select" v-model="selectedKeywordId" class="mb-3">
                        <option disabled value="">Keywords</option>
                        <option v-bind:value="0" v-on:click="keywordSelected">all</option>
                        <option v-for="keyword in keywords" v-bind:value="keyword.id" v-on:click="keywordSelected">
                        {{keyword.name}}
                        </option>
                    </select>
-                   <span class="ml-3">
+                   <span class="ml-3" style="white-space:nowrap">
+                     <button class="btn btn-success mr-2" v-on:click="showUploadPage">Add Photos</button>
+
                      <button class="btn btn-success" v-on:click="toggleDeleteMode">
                      <span v-if="isDeleteMode">View Mode</span>
                      <span v-else="isDeleteMode">Delete Mode</span>
@@ -154,6 +156,10 @@ Vue.component('photo-home', {
                .catch(error => {
                    console.log(error);
                });
+        },
+        showUploadPage()
+        {
+            window.location.href = "/photos/upload";
         }
     }
 });
