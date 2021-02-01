@@ -16,21 +16,27 @@ Vue.component('photo-single', {
 Vue.component('photo-home', {
     template: `
       <div>
-        <div class="row">
+         <div class="row">
             <div class="col-12">
-                <h1 class="text-center">Photo Gallery</h1>
-                <div class="keyword-search">
-                    Keyword Search:
-                    <select name="keyword-select" v-model="selectedKeywordId">
-                        <option disabled value="">Keywords</option>
-                        <option v-bind:value="0" v-on:click="keywordSelected">all</option>
-                        <option v-for="keyword in keywords" v-bind:value="keyword.id" v-on:click="keywordSelected">
-                        {{keyword.name}}
-                        </option>
-                    </select>
+               <h1 class="text-center">Photo Gallery</h1>
+               <div class="keyword-search">
+                   Keyword Search:
+                   <select name="keyword-select" v-model="selectedKeywordId">
+                       <option disabled value="">Keywords</option>
+                       <option v-bind:value="0" v-on:click="keywordSelected">all</option>
+                       <option v-for="keyword in keywords" v-bind:value="keyword.id" v-on:click="keywordSelected">
+                       {{keyword.name}}
+                       </option>
+                   </select>
+                   <span class="ml-3">
+                     <button class="btn btn-success" v-on:click="toggleDeleteMode">
+                     <span v-if="isDeleteMode">View Mode</span>
+                     <span v-else="isDeleteMode">Delete Mode</span>
+                     </button>
+                   </span>
                 </div>            
             </div>
-        </div>
+         </div>
         
         <div class="row">
           <div class="col-8 col-md-6 col-lg-4 col-xl-3" v-for="photo in photos">
@@ -50,10 +56,14 @@ Vue.component('photo-home', {
                 </div>
               </div>
               <div class="card-footer">
-                <p style="height: 50px">
-                   <b>Description</b><br>
-                   {{ photo.description | truncate}}
-                </p>
+                 <p v-if="isDeleteMode" class="mt-3">
+                    <button class="btn btn-danger" v-on:click="deleteImage(photo.id)">Delete</button>
+                 </p>
+
+                 <p v-else style="height: 50px">
+                    <b>Description</b><br>
+                    {{ photo.description | truncate}}
+                 </p>
               </div> 
             </div>        
           </div>
@@ -67,7 +77,8 @@ Vue.component('photo-home', {
             keywords: [],
             selectedKeywordId: "0",
             pageCount: 1,
-            endpoint: '/api/photos'
+            endpoint: '/api/photos',
+            isDeleteMode: false
         };
     },
 
@@ -126,6 +137,23 @@ Vue.component('photo-home', {
                 .then(({data}) => {
                     this.photos = data;
                 });
+        },
+
+        toggleDeleteMode()
+        {
+            this.isDeleteMode = !this.isDeleteMode;
+        },
+
+        deleteImage(photoId)
+        {
+            alert("Delete Image: " + photoId);
+            axios.delete("/api/photos/"+photoId)
+               .then(response => {
+                   this.photos = this.photos.filter(photo => photo.id != photoId);
+               })
+               .catch(error => {
+                   console.log(error);
+               });
         }
     }
 });
