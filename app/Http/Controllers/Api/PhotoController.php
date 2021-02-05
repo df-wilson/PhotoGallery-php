@@ -25,7 +25,7 @@ class PhotoController extends Controller
 
         $photos = Photo::getAllForUser($userId);
 
-        logger("Api/PhotoController::index LEAVE", ["Photos" => $photos]);
+        logger("Api/PhotoController::index LEAVE");
 
         return $photos;
     }
