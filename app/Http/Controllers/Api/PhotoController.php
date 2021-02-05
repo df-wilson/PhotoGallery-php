@@ -246,10 +246,15 @@ class PhotoController extends Controller
         $photo = Photo::find($id);
 
         if($photo->user_id == $userId) {
-            $photo->name = $request->input("title");
-            $photo->save();
-            $code = 200;
-            $message = "updated";
+            if($request->input("title")) {
+                $photo->name = $request->input("title");
+                $photo->save();
+                $code = 200;
+                $message = "updated";
+            } else {
+                $code = 400;
+                $message = "Invalid title. Not saved.";
+            }
         } else {
             $code = 403;
             $message = "photo does not belong to user.";
