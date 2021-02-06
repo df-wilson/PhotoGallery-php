@@ -18,7 +18,7 @@ Vue.component('photo-home', {
       <div>
          <div class="row">
             <div class="col-12">
-               <h1 class="text-center">Photo Gallery</h1>
+               <h1 class="text-center mb-4">Photo Gallery</h1>
                <div class="keyword-search">
                    Keyword Search:
                    <select name="keyword-select" v-model="selectedKeywordId" class="mb-3">
@@ -148,7 +148,6 @@ Vue.component('photo-home', {
 
         deleteImage(photoId)
         {
-            alert("Delete Image: " + photoId);
             axios.delete("/api/photos/"+photoId)
                .then(response => {
                    this.photos = this.photos.filter(photo => photo.id != photoId);
