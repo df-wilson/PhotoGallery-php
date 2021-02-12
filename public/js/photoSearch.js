@@ -34,22 +34,31 @@ Vue.component('photo-search', {
              </label>
           </div>
           
-          <div class="form-check">
-            <label class="form-check-label" for="private-checkbox">
-            <input type="checkbox" id="private-checkbox" name="private_checkbox" class="form-check-input" v-model="private">
-            My Photos
-            </label>
-
-            <label for="public-checkbox">
-                <input type="checkbox" id="public-checkbox" name="public_checkbox" v-model="public">
-                Public Photos
-            </label>
+          <div class="form-check form-check-inline">
+             <label class="form-check-label" for="private-checkbox">
+                <input type="checkbox" 
+                       id="private-checkbox" 
+                       name="private_checkbox" 
+                       class="form-check-input" 
+                       v-model="private">
+                My Photos
+             </label>
+          </div>
+          <div class="form-check form-check-inline">
+              <label for="public-checkbox">
+                 <input type="checkbox" 
+                        id="public-checkbox" 
+                        name="public_checkbox"
+                        class="form-check-input"
+                        v-model="public">
+                 Public Photos
+              </label>
           </div>
           
-          <button type="button" class="btn btn-primary" v-on:click="reset()">Reset</button>
-          <button type="submit" class="btn btn-primary">
-          Submit!
-          </button>
+          <div id="form-buttons" class="mt-3">
+             <button type="button" class="btn btn-primary" v-on:click="reset()">Reset</button>
+             <button type="submit" class="btn btn-primary">Submit!</button>
+          </div>
         </form>
         </div>
       </div>
