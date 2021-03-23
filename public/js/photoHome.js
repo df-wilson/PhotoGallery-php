@@ -1,18 +1,3 @@
-Vue.component('photo-single', {
-    template: `
-        <div>
-        <h1>This is a single photo</h1>
-        <p>path {{alt}}</p>
-        <img v-bind:src="path" v-bind:alt="alt">        
-        </div>
-    `,
-    props:['path', 'alt'],
-    mounted() {
-        console.log("Photo Single mounted. Path is " + this.path + " alt " + this.alt)
-
-    }
-});
-
 Vue.component('photo-home', {
     template: `
       <div>
