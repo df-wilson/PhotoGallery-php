@@ -29,11 +29,13 @@ Vue.component('photo-home', {
                        </option>
                    </select>
                    <span class="ml-3" style="white-space:nowrap">
-                     <button class="btn btn-success mr-2" v-on:click="showUploadPage">Add Photos</button>
+                     <button class="btn btn-sm btn-success mr-2" v-on:click="showUploadPage">
+                        Add Photos
+                     </button>
 
-                     <button class="btn btn-success" v-on:click="toggleDeleteMode">
-                     <span v-if="isDeleteMode">View Mode</span>
-                     <span v-else="isDeleteMode">Delete Mode</span>
+                     <button class="btn btn-sm btn-success" v-on:click="toggleDeleteMode">
+                        <span v-if="isDeleteMode">View Mode</span>
+                        <span v-else="isDeleteMode">Delete Mode</span>
                      </button>
                    </span>
                 </div>            
