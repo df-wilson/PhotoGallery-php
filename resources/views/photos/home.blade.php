@@ -7,7 +7,3 @@
         </div>
     </div>
 @endsection
-
-@section('javascript')
-    <script src="/js/photoHome.js"></script>
-@endsection
