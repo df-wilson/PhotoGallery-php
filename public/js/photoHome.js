@@ -92,7 +92,7 @@ Vue.component('photo-home', {
         this.fetch();
         this.fetchKeywords();
     },
-    
+
     filters: {
         truncate(value) {
             if(value.length > 70) {
@@ -120,6 +120,7 @@ Vue.component('photo-home', {
                 })
                     .then(({data}) => {
                         this.photos = data.photos;
+                        this.updateDisplayPhotos(0, this.perPage);
                     });
             } else {
                 axios.get(this.endpoint)
