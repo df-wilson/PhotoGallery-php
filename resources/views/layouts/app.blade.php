@@ -81,6 +81,7 @@
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap4.min.js"></script>
     <script src="/js/vue.min.js"></script>
+    <script src="/js/pagination.js"></script>
     <script src="/js/photoHome.js"></script>
     <script src="/js/photoExplore.js"></script>
     <script src="/js/photoSearch.js"></script>
