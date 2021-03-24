@@ -7,8 +7,3 @@
         </div>
     </div>
 @endsection
-
-@section('javascript')
-    <script src="/js/photoSearch.js"></script>
-
-@endsection
