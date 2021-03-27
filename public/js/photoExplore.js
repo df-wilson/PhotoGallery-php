@@ -43,7 +43,7 @@ Vue.component('photo-explore', {
           <div class="row justify-content-center">
             <div class="col-12 col-sm-8 col-md-6 col-lg-4 col-xl-2">
                 <pagination
-                    :total="photos.length"
+                    :total-items="photos.length"
                     :per-page="perPage"
                     :current-page="currentPage"
                     @pagechanged="onPageChange"
@@ -73,9 +73,7 @@ Vue.component('photo-explore', {
         this.fetch();
         this.fetchKeywords();
     },
-    mounted() {
 
-    },
     filters: {
         truncate(value) {
             if(value.length > 70) {

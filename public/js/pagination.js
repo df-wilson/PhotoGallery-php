@@ -54,7 +54,7 @@ var Pagination = {
          type: Number,
          required: true
       },
-      total: {
+      totalItems: {
          type: Number,
          required: true
       },
@@ -75,7 +75,7 @@ var Pagination = {
       },
       totalPages()
       {
-         return Math.ceil(this.total/this.perPage)
+         return Math.ceil(this.totalItems/this.perPage)
       },
       
       startPage() 
@@ -102,7 +102,7 @@ var Pagination = {
          const range = [];
          
          for(let i = this.startPage; 
-                 i<=Math.min(this.startPage + this.visibleButtons - 1);
+                 i<=(this.startPage + this.visibleButtons - 1);
                  ++i)
          {
             range.push({
