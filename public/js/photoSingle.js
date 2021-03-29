@@ -120,6 +120,15 @@ function submitKeyword(photoId)
     keywordElement.value = "";
 }
 
+function submitTitleOnEnter(event, photoId)
+{
+    if(event.keyCode === 13) {
+        event.preventDefault();
+
+        submitTitle(photoId);
+    }
+}
+
 function submitTitle(id)
 {
     let title = document.getElementById("img-title-input").value;

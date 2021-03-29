@@ -8,7 +8,7 @@
                     <h1 id="img-title-text" class="text-center">{{$name}}</h1>
                 </div>
                 <div id="img-title-edit">
-                    <input id="img-title-input" type="text" required size="30">
+                    <input id="img-title-input" type="text" required size="30" onkeypress="submitTitleOnEnter(event, {{$id}})">
                     <button id="img-title-update-btn" class="btn btn-primary btn-sm" type="button" onclick="submitTitle({{$id}})">Update</button>
                     <button id="img-title-cancel-btn" class="btn btn-primary btn-sm" type="button" onclick="cancelUpdateTitle()">Cancel</button>
                 </div>
