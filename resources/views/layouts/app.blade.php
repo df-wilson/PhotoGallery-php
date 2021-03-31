@@ -72,6 +72,11 @@
             </nav>
 
             @yield('content')
+
+            <footer>
+                <hr class="mt-4">
+                <p class="text-center mt-2">&copy; 2021 Dean Wilson</p>
+            </footer>
         </div>
     </div>
 
