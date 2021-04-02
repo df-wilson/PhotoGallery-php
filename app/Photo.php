@@ -25,7 +25,7 @@ class Photo extends Model
         logger("Enter Photo::getForUser", ["User Id" => $userId, "PhotoId" => $photoId]);
 
         $photo = null;
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
+        $result = DB::select('select photos.id, photos.name, photos.description, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.filepath, photos.is_public from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];

@@ -78,6 +78,9 @@ class PhotoController extends Controller
                             [
                                 'name' => $photo->name,
                                 'description' => $photo->description,
+                                'photo_datetime' => $photo->photo_datetime,
+                                'camera' => $photo->camera_brand,
+                                'model' => $photo->camera_model,
                                 'src' => $photo->filepath,
                                 'id' => $photo->id,
                                 'is_public' => $photo->is_public,

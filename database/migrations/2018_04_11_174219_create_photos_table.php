@@ -23,6 +23,9 @@ class CreatePhotosTable extends Migration
             $table->boolean('is_public');
             $table->text('description');
             $table->timestamps();
+            $table->dateTime('photo_datetime');
+            $table->string('camera_brand', 25);
+            $table->string('camera_model', 25);
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

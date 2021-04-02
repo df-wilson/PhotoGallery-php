@@ -289,13 +289,25 @@ class PhotoController extends Controller
                 $path = $file->storeAs('public/images', $name);
                 $path = "/storage/images/".$name;
                 $thumbnailPath = "/storage/images/thumb_".$name;
-                Image::make("./".$path)
-                    ->orientate()
-                    ->fit(200, 150)
-                    ->save("./".$thumbnailPath);
-                Image::make("./".$path)
-                    ->orientate()
-                    ->save("./".$path);
+
+                $downloadedPhoto = Image::make("./".$path);
+
+                $description = $downloadedPhoto->iptc("Caption");
+                if(gettype($description) != "string") {
+                    $description = "";
+                }
+                $dateTime = $downloadedPhoto->exif("DateTime");
+                $manufacturer = $downloadedPhoto->exif("Manufacturer");
+                if(!$manufacturer) {
+                    $manufacturer = $downloadedPhoto->exif("Make");
+                }
+                $model = $downloadedPhoto->exif("Model");
+
+                $downloadedPhoto->orientate()
+                                ->save("./".$path);
+
+                $downloadedPhoto->fit(200, 150)
+                                ->save("./".$thumbnailPath);
 
                 $photo = new Photo;
                 $photo->user_id = $userId;
@@ -303,7 +315,10 @@ class PhotoController extends Controller
                 $photo->is_public = false;
                 $photo->filepath = $path;
                 $photo->thumbnail_filepath = $thumbnailPath;
-                $photo->description = "";
+                $photo->description = $description;
+                $photo->photo_datetime = $dateTime;
+                $photo->camera_brand = substr($manufacturer,0,15);
+                $photo->camera_model = substr($model,0,15);
                 $photo->save();
 
                 $content = ["id" => $photo->id, "fileName" => "thumb_$name", "originalName" => $name];

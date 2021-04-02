@@ -44,10 +44,29 @@
                     @endforeach
                 </div>
 
+                <div id="metadata-section">
+                    <h2>Photo Info</h2>
+                    <table>
+                        <tr>
+                            <td>Date:</td>
+                            <td>{{str_replace(':', '-', substr($photo_datetime,0,10))}}</td>
+                        </tr>
+                        <tr>
+                            <td>Camera:</td>
+                            <td>{{$camera}}</td>
+                        </tr>
+                        <tr>
+                            <td>Model:</td>
+                            <td>{{$model}}</td>
+                        </tr>
+                    </table>
+                </div>
+
                 <div id="public-toggle-div">
                     <input type="checkbox" id="public-checkbox" name="public-checkbox" @if($is_public) checked @endif onchange="submitTogglePublic({{$id}})">
                     <label for="public-checkbox">Allow public</label>
                 </div>
+
                 <div id="navigation-section">
                     <button class="btn btn-light" onclick="showPreviousPhoto({{$id}})">⇦</button>
                     <button class="btn btn-light" onclick="showNextPhoto({{$id}})">⇨</button>
