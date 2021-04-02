@@ -2,6 +2,7 @@ let keywords = [];
 
 window.addEventListener("load", function()
 {
+    setDescriptionUpdateCheck(false);
     fetchKeywords();
 });
 
@@ -43,7 +44,7 @@ function showPreviousPhoto(photoId)
 function showUpdateButton()
 {
     let updateButton = document.getElementById("desc-update-button");
-    updateButton.style.display = "block";
+    updateButton.style.display = "inline-block";
 }
 
 function showAddKeyword()
@@ -80,10 +81,22 @@ function submitDescription(id)
     })
         .then(function (response) {
             console.log(response);
+            setDescriptionUpdateCheck(true);
         })
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function setDescriptionUpdateCheck(isShown)
+{
+    let updateCheck = document.getElementById("desc-update-check");
+
+    if(isShown) {
+        updateCheck.style.display = "inline-block";
+    } else {
+        updateCheck.style.display = "none";
+    }
 }
 
 function checkKeywordInputForEnter(event, photoId)

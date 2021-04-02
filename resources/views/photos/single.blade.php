@@ -21,8 +21,10 @@
                 </div>
 
                 <h2>Description</h2>
-                <textarea id="desc-text" class="img-desc form-control" name="textarea" rows="4" cols="40" onfocus="showUpdateButton()">{{$description}}</textarea>
+                <textarea id="desc-text" class="img-desc form-control" name="textarea" rows="4" cols="40" onfocus="showUpdateButton()" onkeydown="setDescriptionUpdateCheck(false)">{{$description}}</textarea>
                 <button id="desc-update-button" class="btn btn-primary btn-sm" type="button" onclick="submitDescription({{$id}})" style="display: none">Update</button>
+
+                <span id="desc-update-check">✔</span>
             </div>
             <div class="col-12 col-md-3 col-lg-2">
                 <div id="keyword-div">
