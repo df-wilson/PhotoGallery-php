@@ -36,7 +36,7 @@ class Photo extends Model
     public static function getNextForUser(int $userId, int $photoId)
     {
         $photo = [];
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id>? and photos.user_id =? and users.id = photos.user_id order by photos.id', [$photoId, $userId]);
+        $result = DB::select('select photos.id, photos.name, photos.description, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.filepath, photos.is_public from photos, users where photos.id>? and photos.user_id =? and users.id = photos.user_id order by photos.id', [$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];
@@ -48,7 +48,7 @@ class Photo extends Model
     public static function getPreviousForUser(int $userId, int $photoId)
     {
         $photo = [];
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.filepath, photos.is_public from photos, users where photos.id<? and photos.user_id =? and users.id = photos.user_id order by photos.id DESC', [$photoId, $userId]);
+        $result = DB::select('select photos.id, photos.name, photos.description, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.filepath, photos.is_public from photos, users where photos.id<? and photos.user_id =? and users.id = photos.user_id order by photos.id DESC', [$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];

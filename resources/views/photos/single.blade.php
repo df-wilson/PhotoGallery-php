@@ -49,15 +49,15 @@
                     <table>
                         <tr>
                             <td>Date:</td>
-                            <td>{{str_replace(':', '-', substr($photo_datetime,0,10))}}</td>
+                            <td>{{str_replace(':', '-', substr($photo_datetime ?? '',0,10))}}</td>
                         </tr>
                         <tr>
                             <td>Camera:</td>
-                            <td>{{$camera}}</td>
+                            <td>{{$camera?? ''}}</td>
                         </tr>
                         <tr>
                             <td>Model:</td>
-                            <td>{{$model}}</td>
+                            <td>{{$model ?? ''}}</td>
                         </tr>
                     </table>
                 </div>
