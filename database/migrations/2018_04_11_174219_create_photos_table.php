@@ -26,6 +26,11 @@ class CreatePhotosTable extends Migration
             $table->dateTime('photo_datetime');
             $table->string('camera_brand', 25);
             $table->string('camera_model', 25);
+            $table->string('iso', 25);
+            $table->string('aperture', 25);
+            $table->string('shutter_speed', 25);
+            $table->string('height', 25);
+            $table->string('width',25);
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

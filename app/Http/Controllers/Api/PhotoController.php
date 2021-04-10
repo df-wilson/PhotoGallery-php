@@ -292,17 +292,31 @@ class PhotoController extends Controller
 
                 $downloadedPhoto = Image::make("./".$path);
 
-                $description = $downloadedPhoto->iptc("Caption");
-                if(gettype($description) != "string") {
-                    $description = "";
-                }
-                $dateTime = $downloadedPhoto->exif("DateTime");
+                // Get exif and iptc info
+                $description = $downloadedPhoto->iptc("Caption") ?? '';
+                $dateTime = $downloadedPhoto->exif("DateTime") ?? '';
                 $manufacturer = $downloadedPhoto->exif("Manufacturer");
                 if(!$manufacturer) {
-                    $manufacturer = $downloadedPhoto->exif("Make");
+                    $manufacturer = $downloadedPhoto->exif("Make") ?? '';
                 }
-                $model = $downloadedPhoto->exif("Model");
+                $model = $downloadedPhoto->exif("Model") ?? '';
+                $iso = $downloadedPhoto->exif("ISOSpeedRatings") ?? '';
+                $shutter_speed = $this->exifShutterSpeedToDisplayValue($downloadedPhoto->exif("ExposureTime") ?? '');
+                $aperture = $this->exifApertureToDisplayValue($downloadedPhoto->exif("FNumber") ?? '');
+                $width = $downloadedPhoto->exif("ExifImageWidth");
+                if($width) {
+                    $width.="px";
+                } else {
+                    $width = '';
+                }
+                $height = $downloadedPhoto->exif("ExifImageLength");
+                if($height) {
+                    $height.="px";
+                } else {
+                    $width = '';
+                }
 
+                // Save photo and thumbnail
                 $downloadedPhoto->orientate()
                                 ->save("./".$path);
 
@@ -317,8 +331,13 @@ class PhotoController extends Controller
                 $photo->thumbnail_filepath = $thumbnailPath;
                 $photo->description = $description;
                 $photo->photo_datetime = $dateTime;
+                $photo->width = $width;
+                $photo->height = $height;
                 $photo->camera_brand = substr($manufacturer,0,15);
                 $photo->camera_model = substr($model,0,15);
+                $photo->iso = $iso;
+                $photo->shutter_speed = $shutter_speed;
+                $photo->aperture = $aperture;
                 $photo->save();
 
                 $content = ["id" => $photo->id, "fileName" => "thumb_$name", "originalName" => $name];
@@ -338,5 +357,41 @@ class PhotoController extends Controller
         }
 
         return response(["msg" => $message, "data" => $returnData], $code);
+    }
+
+    private function exifApertureToDisplayValue(string $exifAperture)
+    {
+        $displayAperture = '';
+
+        $values = explode("/", $exifAperture);
+        if(count($values) == 2) {
+            $numerator = intval($values[0]);
+            $denominator = intval($values[1]);
+
+            if($denominator > 0) {
+                $result = $numerator / $denominator;
+                $displayAperture = 'F'.strval($result);
+            }
+        }
+
+        return $displayAperture;
+    }
+
+    private function exifShutterSpeedToDisplayValue(string $exifShutterSpeed)
+    {
+        $displayShutterSpeed = '';
+
+        $values = explode("/", $exifShutterSpeed);
+        if(count($values) == 2) {
+            $numerator = intval($values[0]);
+            $denominator = intval($values[1]);
+
+            if($denominator > 0) {
+                $result = $numerator / $denominator;
+                $displayShutterSpeed = number_format($result, 4, '.', '')."s";
+            }
+        }
+
+        return $displayShutterSpeed;
     }
 }

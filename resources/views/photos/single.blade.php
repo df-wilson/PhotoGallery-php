@@ -59,6 +59,26 @@
                             <td>Model:</td>
                             <td>{{$model ?? ''}}</td>
                         </tr>
+                        <tr>
+                            <td>Width:</td>
+                            <td>{{$width ?? ''}}</td>
+                        </tr>
+                        <tr>
+                            <td>Height:</td>
+                            <td>{{$height ?? ''}}</td>
+                        </tr>
+                        <tr>
+                            <td>ISO:</td>
+                            <td>{{$iso ?? ''}}</td>
+                        </tr>
+                        <tr>
+                            <td>Aperture:</td>
+                            <td>{{$aperture ?? ''}}</td>
+                        </tr>
+                        <tr>
+                            <td>Exposure:</td>
+                            <td>{{$shutter_speed ?? ''}}</td>
+                        </tr>
                     </table>
                 </div>
 

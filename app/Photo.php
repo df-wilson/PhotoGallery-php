@@ -25,7 +25,7 @@ class Photo extends Model
         logger("Enter Photo::getForUser", ["User Id" => $userId, "PhotoId" => $photoId]);
 
         $photo = null;
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.filepath, photos.is_public from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
+        $result = DB::select(self::singlePhotoSelect . ' from photos, users where photos.id=? and (photos.user_id =? or photos.is_public = 1) and users.id = photos.user_id order by photos.created_at',[$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];
@@ -36,7 +36,7 @@ class Photo extends Model
     public static function getNextForUser(int $userId, int $photoId)
     {
         $photo = [];
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.filepath, photos.is_public from photos, users where photos.id>? and photos.user_id =? and users.id = photos.user_id order by photos.id', [$photoId, $userId]);
+        $result = DB::select(self::singlePhotoSelect . ' from photos, users where photos.id>? and photos.user_id =? and users.id = photos.user_id order by photos.id', [$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];
@@ -48,7 +48,7 @@ class Photo extends Model
     public static function getPreviousForUser(int $userId, int $photoId)
     {
         $photo = [];
-        $result = DB::select('select photos.id, photos.name, photos.description, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.filepath, photos.is_public from photos, users where photos.id<? and photos.user_id =? and users.id = photos.user_id order by photos.id DESC', [$photoId, $userId]);
+        $result = DB::select(self::singlePhotoSelect . ' from photos, users where photos.id<? and photos.user_id =? and users.id = photos.user_id order by photos.id DESC', [$photoId, $userId]);
 
         if(count($result)) {
             $photo = $result[0];
@@ -213,4 +213,6 @@ class Photo extends Model
         }
         return $photo;
     }
+
+    private const singlePhotoSelect = 'select photos.id, photos.name, photos.description, photos.height, photos.width, photos.photo_datetime, photos.camera_brand, photos.camera_model, photos.iso, photos.aperture, photos.shutter_speed, photos.filepath, photos.is_public';
 }
