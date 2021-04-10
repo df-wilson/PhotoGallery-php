@@ -50,7 +50,7 @@ class PhotoController extends Controller
                     logger("Api/PhotoController::delete - Photo filepath ", ["Filepath" => $photo->filepath]);
 
                     // Delete file and thumbnail.
-                    $filepath = str_replace("/storage", "/public", $photo->filepath);
+                    $filepath = "/public".$photo->filepath;
                     if(Storage::exists($filepath))
                     {
                         Storage::delete($filepath);
@@ -60,7 +60,7 @@ class PhotoController extends Controller
                         logger()->error("Photo does not exist.", ["Photo" => $filepath]);
                     }
 
-                    $filepath = str_replace("/storage", "/public", $photo->thumbnail_filepath);
+                    $filepath = "/public".$photo->thumbnail_filepath;
                     if(Storage::exists($filepath))
                     {
                         Storage::delete($filepath);
@@ -287,10 +287,10 @@ class PhotoController extends Controller
                 $name = $file->getClientOriginalName();
                 $extension = $file->extension();
                 $path = $file->storeAs('public/images', $name);
-                $path = "/storage/images/".$name;
-                $thumbnailPath = "/storage/images/thumb_".$name;
+                $path = "/images/".$name;
+                $thumbnailPath = "/images/thumb_".$name;
 
-                $downloadedPhoto = Image::make("./".$path);
+                $downloadedPhoto = Image::make(".".$path);
 
                 // Get exif and iptc info
                 $description = $downloadedPhoto->iptc("Caption") ?? '';
@@ -318,10 +318,10 @@ class PhotoController extends Controller
 
                 // Save photo and thumbnail
                 $downloadedPhoto->orientate()
-                                ->save("./".$path);
+                                ->save(".".$path);
 
                 $downloadedPhoto->fit(200, 150)
-                                ->save("./".$thumbnailPath);
+                                ->save(".".$thumbnailPath);
 
                 $photo = new Photo;
                 $photo->user_id = $userId;
