@@ -318,7 +318,7 @@ class PhotoController extends Controller
                 if($height) {
                     $height.="px";
                 } else {
-                    $width = '';
+                    $height = '';
                 }
 
                 // Save photo and thumbnail
