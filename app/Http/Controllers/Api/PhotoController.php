@@ -292,13 +292,13 @@ class PhotoController extends Controller
 
                 $downloadedPhoto = Image::make(".".$path);
 
-                // Get exif and iptc info
-                $description = $downloadedPhoto->iptc("Caption");
-                if(gettype($description) != "string") {
-                    // If iptc caption does not exist, binary data may be returned. In this case
-                    // return empty string.
-                    $description = "";
+                // Get exif info
+                $description = '';
+                $computed = $downloadedPhoto->exif("COMPUTED");
+                if($computed) {
+                    $description = $computed["UserComment"] ?? '';
                 }
+
                 $dateTime = $downloadedPhoto->exif("DateTime") ?? '';
                 $manufacturer = $downloadedPhoto->exif("Manufacturer");
                 if(!$manufacturer) {
